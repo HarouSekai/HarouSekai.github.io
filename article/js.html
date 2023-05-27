@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../assets/stylesheet.css">
+        <link rel="icon" href="../assets/favicon.png">
+        
+    </head>
+    <body>
+        <header>
+            <div class="content">
+                <div class="header-logo">
+                    <a href="../index.html">
+                        <span></span>
+                    </a>
+                </div>
+                <div class="menu">
+                    <a href="index.html">HOME</a>
+                </div>
+            </div>
+        </header>
+        <div class="main">
+            <div class="content">
+                <pre>
+                    <code>
+<!-- ここに記入 -->
+
+＜セミコロンの決まり＞
+
+・ルール上セミコロンを付ける
+（１）変数・定数の定義
+（２）メソッド
+（３）関数式（無名関数）
+（４）関数式（即時関数）
+（５）関数式（アロー関数）
+
+・ルール上セミコロンを付けない
+（１）関数宣言
+（２）if文、for文など
+______________________________________
+関数宣言
+
+function 関数名(引数){
+	処理
+};
+
+_______________________________________
+関数式（無名関数）
+
+const 定数 = function(){
+	処理
+};
+
+_______________________________________
+関数式（即時関数）
+
+(function 関数名(仮引数){
+	処理
+})(引数)
+
+_______________________________________________________________________
+アロー関数：無名関数、即時関数で使える。※DOMの一部で動作しないことが確認された。
+
+const 変数名 = () => {
+	処理
+}
+
+_____________________
+forEach関数
+
+fruits = ["apple", "orange", "grape"];
+fruits.forEach(function(item) {
+	console.log(item);
+});
+
+_____________________________
+DOM
+
+＜HTML要素の取得＞
+document.getElementById("id名")
+document.getElementsByClassName("class名")
+document.querySelectorAll("セレクタ名")
+
+
+＜JavaScriptファイルの読み込み＞
+```HTML
+&lt;script src="javascriptファイル">&lt;/script>
+
+＜イベント例＞
+load
+click
+mouseover
+mouseout
+keyup
+
+＜イベント発火元の要素を取得＞
+this
+
+＜メソッド＞
+addEventListener('イベント名', 関数)
+addAttribute("属性", "値")
+removeAttribute("属性")
+getAttribute("属性")
+debugger
+value		：入力フォーム内の文字列を取得
+innerHTML
+length	：文字数を数える
+
+
+＜Ajaxコード例＞
+```memo.js
+
+const buildHTML = (XHR) => {
+	const item = XHR.response.post;
+	const html = `
+		&lt;div class="post">
+			&lt;div class="post-date">
+				投稿日時：${item.created_at}
+			&lt;/div>
+			&lt;div class="post-content">
+				${item.content}
+			&lt;/div>
+		&lt;/div>`;
+	return html;
+};
+
+function post (){
+	const submit = document.getElementById("submit");
+	submit.addEventListener("click", (e) => {
+		e.preventDefault();
+		const form = document.getElementById("form");
+		const formData = new FormData(form);
+		const XHR = new XMLHttpRequest();
+		XHR.open("POST", "/posts", true);
+		XHR.responseType = "json";
+		XHR.send(formData);
+		XHR.onload = () => {
+			if (XHR.status != 200) {
+				alert(`Error ${XHR.status}: ${XHR.statusText}`);
+				return null;
+			};
+			const list = 
+			list.insertAdjacentHTML("afterend", buildHTML(XHR));
+			formText.value = "";
+		};
+	});
+};
+
+
+```posts_controller.rb
+def create
+	post = Post.create(content: params[:content])
+	render json:{post: post}
+	# jsonメソッドで、変数postにpostというキーを付けてjson形式で返す
+end
+                    </code>
+                </pre>
+            </div>
+        </div>
+        <footer>
+            <div class="footer-logo">波浪世界</div>
+            <div class="content"></div>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../assets/stylesheet.css">
+        <link rel="icon" href="../assets/favicon.png">
+        
+    </head>
+    <body>
+        <header>
+            <div class="content">
+                <div class="header-logo">
+                    <a href="../index.html">
+                        <span></span>
+                    </a>
+                </div>
+                <div class="menu">
+                    <a href="index.html">HOME</a>
+                </div>
+            </div>
+        </header>
+        <div class="main">
+            <div class="content">
+                <pre>
+                    <code>
+<!-- ここに記入 -->
+KeyError
+１．コンソールを終了
+exit
+２．Springを停止
+spring stop
+
+_____________________________________________________________________________________________________________
+＜ファイル名・パスなど＞
+spec/factories/users.rb
+```
+FactoryBot.define do
+  factory :user do
+    nickname              {'test'}
+    email                 {'test@example'}
+    password              {'000000'}
+    password_confirmation {password}
+  end
+end
+```
+
+_____________________________________________
+＜Faker＞
+Faker::Team.name
+_____________________________________________
+＜結合テストコードでファイルを添付＞※第3引数はオプション
+attach_file('name属性[属性値]',添付ファイルのパス, make_visible: true)
+_________________________________________
+＜ファイル・画像添付方法＞
+spec/factories/messages.rb
+```
+(factory :message do内)
+after(:build) do |message|
+  message.image.attach(io: File.open('public/images/test_image.png'), filename: 'test_image.png')
+end
+```
+models/message_spec.rb
+```
+#imageが空
+@message.image = nil
+```
+system/messages_spec.rb
+```
+# 添付する画像を定義する
+image_path = Rails.root.join('public/images/test_image.png')
+# 画像選択フォームに画像を添付する
+attach_file('message[image]', image_path, make_visible: true)
+# 送信した画像がブラウザに表示されていることを確認する
+expect(page).to have_selector ".message-image"
+```
+__________________________________________
+
+gemの導入
+gem 'rspec-rails'
+bundle install
+
+アプリケーション内でRspecを使うための設定
+rails g rspec:install
+
+テストコードの結果をターミナルに表示するための記述
+（.rspec）
+--format documentaion
+
+Userモデルのテストファイルを作成
+rails g rspec:model user
+
+生成されたファイル内（spec/models/user_spec.rb）
+require 'rails_helper'
+
+RSpec.describe User, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
+end
+
+単純なテストコード例
+require 'rails_helper'
+
+RSpec.describe User, type: :model do
+  describe 'ユーザー新規登録' do
+    it 'nicknameが空では登録できない' do
+      user = User.new(nickname: '', email: 'test@example', password: '000000', password_confirmation: '000000')
+      user.valid?
+      expect(user.errors.full_messages).to include("Nickname can't be blank")
+    end
+  end
+end
+
+
+テストコードのグループ分け
+describe > context > it
+example	itで作ったグループ。
+
+bundle exec
+Gemの依存関係を整理する。
+
+rspec
+specディレクトリ以下のテストコードを実行する。
+
+テストコードの実行
+bundle exec rspec spec/models/user_spec.rb 
+
+
+valid?
+バリデーションを実行させて、エラーがあるか調べる。
+
+expect
+検証で得られた挙動が想定通りか確認する
+
+include
+expectの引数にincludeの引数が含まれるか確認
+
+
+FctoryBotでインスタンスをまとめる
+gem 'factory_bot_rails'
+bundle install
+
+FactoryBot.define do
+  factory :user do
+    nickname              {'test'}
+    email                 {'test@example'}
+    password              {'000000'}
+    password_confirmation {password}
+  end
+end
+
+
+Fakerでランダムな値を出力
+gem 'faker'
+bundle install
+
+FactoryBot.define do
+  factory :user do
+    nickname              {Faker::Name.initials(number: 2)}
+    email                 {Faker::Internet.free_email}
+    password              {Faker::Internet.password(min_length: 6)}
+    password_confirmation {password}
+  end
+end
+
+
+Userモデルテストコード例
+it 'passwordが129文字以上では登録できない' do
+  @user.password = Faker::Internet.password(min_length: 129, max_length: 150)
+  @user.password_confirmation = @user.password
+  @user.valid?
+  expect(@user.errors.full_messages).to include("Password is too long (maximum is 128 characters)")
+end
+
+
+コントローラーの単体テストコード
+テストファイルの作成：
+rails g rspec:request tweets
+
+
+HTTPステータスコード
+HTTP通信がどのような処理の結果になったか示す。
+100~	処理継続中
+200~	処理成功
+300~	リダイレクト
+400~	クライアントのエラー
+500~	サーバーのエラー
+
+response.status		：レスポンスのステータスコードを調べる
+=> 200など
+
+tweetsコントローラーのテストコードの一部
+it 'showアクションにリクエストするとレスポンスに投稿済みのツイートのテキストが存在する' do 
+  get tweet_path(@tweet)
+  expect(response.body).to include(@tweet.text)
+end
+it 'showアクションにリクエストするとレスポンスに投稿済みのツイートの画像URLが存在する' do 
+  get tweet_path(@tweet)
+  expect(response.body).to include(@tweet.image)
+end
+
+
+結合テストコード
+Railsに入っているCapybaraを使う。
+
+ファイルの作成
+rails g rspec:system users
+
+usersコントローラー結合テストのひな型
+require 'rails_helper'
+
+RSpec.describe 'ユーザー新規登録', type: :system do
+  before do
+    @user = FactoryBot.build(:user)
+  end
+  context 'ユーザー新規登録ができるとき' do 
+    it '正しい情報を入力すればユーザー新規登録ができてトップページに移動する' do
+      # トップページに移動する
+      # トップページにサインアップページへ遷移するボタンがあることを確認する
+      # 新規登録ページへ移動する
+      # ユーザー情報を入力する
+      # サインアップボタンを押すとユーザーモデルのカウントが1上がることを確認する
+      # トップページへ遷移したことを確認する
+      # カーソルを合わせるとログアウトボタンが表示されることを確認する
+      # サインアップページへ遷移するボタンや、ログインページへ遷移するボタンが表示されていないことを確認する
+    end
+  end
+  context 'ユーザー新規登録ができないとき' do
+    it '誤った情報ではユーザー新規登録ができずに新規登録ページへ戻ってくる' do
+      # トップページに移動する
+      # トップページにサインアップページへ遷移するボタンがあることを確認する
+      # 新規登録ページへ移動する
+      # ユーザー情報を入力する
+      # サインアップボタンを押してもユーザーモデルのカウントは上がらないことを確認する
+      # 新規登録ページへ戻されることを確認する
+    end
+  end
+end
+
+visit
+page
+have_content
+fill_in
+find().click
+change
+
+
+テストコード例
+it '正しい情報を入力すればユーザー新規登録ができてトップページに移動する' do
+  # トップページに移動する
+  visit root_path
+  # トップページにサインアップページへ遷移するボタンがあることを確認する
+  expect(page).to have_content('新規登録')
+  # 新規登録ページへ移動する
+  visit new_user_registration_path
+  # ユーザー情報を入力する
+  fill_in 'Nickname', with: @user.nickname
+  fill_in 'Email', with: @user.email
+  fill_in 'Password', with: @user.password
+  fill_in 'Password confirmation', with: @user.password_confirmation
+  # サインアップボタンを押すとユーザーモデルのカウントが1上がることを確認する
+  expect{
+    find('input[name="commit"]').click
+  }.to change { User.count }.by(1)
+  # トップページへ遷移したことを確認する
+  # カーソルを合わせるとログアウトボタンが表示されることを確認する
+  # サインアップページへ遷移するボタンや、ログインページへ遷移するボタンが表示されていないことを確認する
+end
+
+
+current_path
+hover
+have_no_content
+
+テストコード例
+it '誤った情報ではユーザー新規登録ができずに新規登録ページへ戻ってくる' do
+  # トップページに移動する
+  visit root_path
+  # トップページにサインアップページへ遷移するボタンがあることを確認する
+  expect(page).to have_content('新規登録')
+  # 新規登録ページへ移動する
+  visit new_user_registration_path
+  # ユーザー情報を入力する
+  fill_in 'Nickname', with: ''
+  fill_in 'Email', with: ''
+  fill_in 'Password', with: ''
+  fill_in 'Password confirmation', with: ''
+  # サインアップボタンを押してもユーザーモデルのカウントは上がらないことを確認する
+  expect{
+    find('input[name="commit"]').click
+  }.to change { User.count }.by(0)
+  # 新規登録ページへ戻されることを確認する
+  expect(current_path).to eq user_registration_path
+end
+
+usersコントローラー結合テストコード
+require 'rails_helper'
+
+RSpec.describe 'ユーザー新規登録', type: :system do
+  before do
+    @user = FactoryBot.build(:user)
+  end
+  context 'ユーザー新規登録ができるとき' do 
+    it '正しい情報を入力すればユーザー新規登録ができてトップページに移動する' do
+      # トップページに移動する
+      visit root_path
+      # トップページにサインアップページへ遷移するボタンがあることを確認する
+      expect(page).to have_content('新規登録')
+      # 新規登録ページへ移動する
+      visit new_user_registration_path
+      # ユーザー情報を入力する
+      fill_in 'Nickname', with: @user.nickname
+      fill_in 'Email', with: @user.email
+      fill_in 'Password', with: @user.password
+      fill_in 'Password confirmation', with: @user.password_confirmation
+      # サインアップボタンを押すとユーザーモデルのカウントが1上がることを確認する
+      expect{
+        find('input[name="commit"]').click
+      }.to change { User.count }.by(1)
+      # トップページへ遷移することを確認する
+      expect(current_path).to eq(root_path)
+      # カーソルを合わせるとログアウトボタンが表示されることを確認する
+      expect(
+        find('.user_nav').find('span').hover
+      ).to have_content('ログアウト')
+      # サインアップページへ遷移するボタンやログインページへ遷移するボタンが表示されていないことを確認する
+      expect(page).to have_no_content('新規登録')
+      expect(page).to have_no_content('ログイン')
+    end
+  end
+  context 'ユーザー新規登録ができないとき' do
+    it '誤った情報ではユーザー新規登録ができずに新規登録ページへ戻ってくる' do
+      # トップページに移動する
+      visit root_path
+      # トップページにサインアップページへ遷移するボタンがあることを確認する
+      expect(page).to have_content('新規登録')
+      # 新規登録ページへ移動する
+      visit new_user_registration_path
+      # ユーザー情報を入力する
+      fill_in 'Nickname', with: ''
+      fill_in 'Email', with: ''
+      fill_in 'Password', with: ''
+      fill_in 'Password confirmation', with: ''
+      # サインアップボタンを押してもユーザーモデルのカウントは上がらないことを確認する
+      expect{
+        find('input[name="commit"]').click
+      }.to change { User.count }.by(0)
+      # 新規登録ページへ戻されることを確認する
+      expect(current_path).to eq user_registration_path
+    end
+  end
+end
+
+RSpec.describe 'ログイン', type: :system do
+  before do
+    @user = FactoryBot.create(:user)
+  end
+  context 'ログインができるとき' do
+    it '保存されているユーザーの情報と合致すればログインができる' do
+      # トップページに移動する
+      visit root_path
+      # トップページにログインページへ遷移するボタンがあることを確認する
+      expect(page).to have_content('ログイン')
+      # ログインページへ遷移する
+      visit new_user_session_path
+      # 正しいユーザー情報を入力する
+      fill_in 'Email', with: @user.email
+      fill_in 'Password', with: @user.password
+      # ログインボタンを押す
+      find('input[name="commit"]').click
+      # トップページへ遷移することを確認する
+      expect(current_path).to eq(root_path)
+      # カーソルを合わせるとログアウトボタンが表示されることを確認する
+      expect(
+        find('.user_nav').find('span').hover
+      ).to have_content('ログアウト')
+      # サインアップページへ遷移するボタンやログインページへ遷移するボタンが表示されていないことを確認する
+      expect(page).to have_no_content('新規登録')
+      expect(page).to have_no_content('ログイン')
+    end
+  end
+  context 'ログインができないとき' do
+    it '保存されているユーザーの情報と合致しないとログインができない' do
+      # トップページに移動する
+      visit root_path
+      # トップページにログインページへ遷移するボタンがあることを確認する
+      expect(page).to have_content('ログイン')
+      # ログインページへ遷移する
+      visit new_user_session_path
+      # ユーザー情報を入力する
+      fill_in 'Email', with: ''
+      fill_in 'Password', with: ''
+      # ログインボタンを押す
+      find('input[name="commit"]').click
+      # ログインページへ戻されることを確認する
+      expect(current_path).to eq(new_user_session_path)
+    end
+  end
+end
+
+
+have_selector
+
+tweetsコントローラー結合テストコード（一部）
+context 'ツイート投稿ができるとき'do
+  it 'ログインしたユーザーは新規投稿できる' do
+    # ログインする
+    visit new_user_session_path
+    fill_in 'Email', with: @user.email
+    fill_in 'Password', with: @user.password
+    find('input[name="commit"]').click
+    expect(current_path).to eq(root_path)
+    # 新規投稿ページへのボタンがあることを確認する
+    expect(page).to have_content('投稿する')
+    # 投稿ページに移動する
+    visit new_tweet_path
+    # フォームに情報を入力する
+    fill_in 'tweet_image', with: @tweet_image
+    fill_in 'tweet_text', with: @tweet_text
+    # 送信するとTweetモデルのカウントが1上がることを確認する
+    expect{
+      find('input[name="commit"]').click
+    }.to change { Tweet.count }.by(1)
+    # 投稿完了ページに遷移することを確認する
+    expect(current_path).to eq(tweets_path)
+    # 「投稿が完了しました」の文字があることを確認する
+    expect(page).to have_content('投稿が完了しました。')
+    # トップページに遷移する
+    visit root_path
+    # トップページには先ほど投稿した内容のツイートが存在することを確認する（画像）
+    expect(page).to have_selector ".content_post[style='background-image: url(#{@tweet_image});']"
+    # トップページには先ほど投稿した内容のツイートが存在することを確認する（テキスト）
+    expect(page).to have_content(@tweet_text)
+  end
+end
+
+have_link
+have_no_link
+all('クラス名')[n]
+
+context 'ツイート編集ができないとき' do
+  it 'ログインしたユーザーは自分以外が投稿したツイートの編集画面には遷移できない' do
+    # ツイート1を投稿したユーザーでログインする
+    visit new_user_session_path
+    fill_in 'Email', with: @tweet1.user.email
+    fill_in 'Password', with: @tweet1.user.password
+    find('input[name="commit"]').click
+    expect(current_path).to eq(root_path)
+    # ツイート2に「編集」へのリンクがないことを確認する
+    expect(
+      all('.more')[0].hover
+    ).to have_no_link '編集', href: edit_tweet_path(@tweet2)
+  end
+  it 'ログインしていないとツイートの編集画面には遷移できない' do
+    # トップページにいる
+    visit root_path
+    # ツイート1に「編集」へのリンクがないことを確認する
+    expect(
+      all('.more')[1].hover
+    ).to have_no_link '編集', href: edit_tweet_path(@tweet1)
+    # ツイート2に「編集」へのリンクがないことを確認する
+    expect(
+      all('.more')[0].hover
+    ).to have_no_link '編集', href: edit_tweet_path(@tweet2)
+  end
+end
+
+
+find_link().click
+
+
+サポートモジュール：
+テストコードの重複する処理をまとめる。
+（spec/support/sign_in_support.rb）
+module SignInSupport
+  def sign_in(user)
+    visit new_user_session_path
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: user.password
+    find('input[name="commit"]').click
+    expect(current_path).to eq(root_path)
+  end
+end
+
+サポートモジュールを読み込めるようにする
+（spec/rails_helper.rb）
+↓のコメントアウトを外す
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
+↓続いて同じファイルを編集
+RSpec.configure do |config|
+  config.include SignInSupport
+  # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
+  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+
+テストコード内ではsign_in(@user)としてサポートモジュールを呼び込む（@userはbefore doで定義済み）
+
+                    </code>
+                </pre>
+            </div>
+        </div>
+        <footer>
+            <div class="footer-logo">波浪世界</div>
+            <div class="content"></div>
+        </footer>
+    </body>
+</html>

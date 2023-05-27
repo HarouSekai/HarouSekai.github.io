@@ -1,0 +1,200 @@
+/* リセットCSS================================= */
+/* http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+	line-height: 1;
+	font-size: 1.6rem;
+}
+
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/* 共通======================================== */
+
+@font-face{
+    /***横書き明朝***/
+    font-family: 'Kyokasho';
+    src: url(Kyokasho.woff);
+}
+
+body{
+    margin: 0;
+    width: 100%;				
+    font-family: 'メイリオ', 'meiryo';
+    line-height: 1.5em;
+}
+
+.content{
+    width: calc(100% - 2em);
+    max-width: 990px;
+    margin: 0 auto;
+    padding: 1em;
+}
+
+header{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(16, 16, 16, 0.7);
+    z-index: 10;
+}
+
+.menu{
+    height: 64px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 1em 1em 0 0;
+    display: flex;
+    align-items: center;
+}
+.menu a{
+    color: #fff;
+    height: 48px;
+    line-height: 32px;
+    border: 1px solid #efefef;
+    padding: 8px;
+}
+
+a{
+    text-decoration: none;
+}
+
+.main{
+    margin-top: 5em;
+    width: 100%;
+    min-height: calc(100vh - 9em);
+}
+
+.header-logo{
+    width: 5em;
+    height: 3em;
+    margin: 0 auto;
+}
+
+.header-logo a{
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0em 1em;
+}
+
+.header-logo a span{
+    display: block;
+    width: 3em;
+    height: 3em;
+    margin: 0 auto;
+    background-image: url(../assets/favicon.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+footer{
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 1em;
+    background-color: #0f0f0f;
+    color: #fff;
+}
+
+.footer-logo{
+    float: left;
+    padding-left: 1em;
+    height: 1.5em;
+    line-height: 1.5em;
+    font-size: 1.4em;
+    letter-spacing: 0.3em;
+    font-family: 'Kyokasho';
+}
+
+h2{
+    border-bottom: 1px solid #afafaf;
+}
+
+li{
+    list-style: none;
+}
+
+/* article */
+.article_lists a{
+    display: inline-block;
+    background-color: #efefef;
+    padding: 0.5em;
+    margin-bottom: 0.5em;
+    width: 200px;
+    color: #0f0f0f;
+}
+
+pre{
+    width: 100%;
+    white-space: pre-wrap;
+}
+code{
+    font-family: 'メイリオ', 'meiryo', monospace;
+}
+
+@media (max-height: 599px) {
+    header{
+        display: none;
+    }
+    .menu a{
+        display: block;
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        background-color: rgba(16, 16, 16, 0.7);
+    }
+}

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../assets/stylesheet.css">
+        <link rel="icon" href="../assets/favicon.png">
+        <title>Railsその２</title>
+    </head>
+    <body>
+        <header>
+            <div class="content">
+                <div class="header-logo">
+                    <a href="../index.html">
+                        <span></span>
+                    </a>
+                </div>
+                <div class="menu">
+                    <a href="index.html">HOME</a>
+                </div>
+            </div>
+        </header>
+        <div class="main">
+            <div class="content">
+                <pre>
+                    <code>
+<h2>基礎知識</h2>
+サーバーの種類
+　　アプリケーションサーバー
+　　Webサーバー
+　　データベースサーバー
+
+Sinatra
+　　Rubyフレームワークの一つ。
+
+gem install sinatra
+　　'sinatraのインストール
+
+#app.rb
+require 'sinatra'
+　　sinatraをファイルに読み込む
+
+HTTPメソッド
+　　get     取得する
+　　post    送信する、作成する
+　　put     更新する、作成する
+　　delete  削除する
+
+Rubyファイルの実行
+　　ruby app.rb
+
+Ruby on Railsの特徴
+　　DRY
+　　CoC
+
+<h2>コマンド</h2>
+rails _6.0.0_ new newApp -d mysql
+    6.0.0   Railsバージョン（省略可）
+    newApp  アプリ名
+    -d      データベースオプション（省略可）
+    mysql   データベースの種類（省略可）
+
+rails db:create
+    データベースの作成
+
+rails s     (= rails server)
+    ローカルサーバーの起動
+
+ctrl + C
+    サーバーの停止
+
+rails routes
+　　ルーティングの確認
+
+rails g ファイルの種類 生成するファイル名       (= rails generate)
+　　Railsアプリに追加で必要なファイルなどを生成する。
+
+rails d ファイルの種類 削除するファイル名       (= rails destroy)
+　　不要なファイルと、その関連ファイルを削除
+
+rails db:rollback
+　　マイグレーション実行による変更を差し戻す。これにより、既存のマイグレーションを編集できる。編集後、反映させる。
+
+rails db:migrate:status
+　　データベース反映状況の確認。up/down
+
+rails c         (= rails console)
+　　コンソールの起動
+
+exit
+　　コンソールの終了
+
+<h2>コード</h2>
+ルーティング１
+    get "/hello" do
+      #処理
+    end
+
+ルーティング２
+    get "posts", to: "posts#index"
+    get "URIパターン", to: "コントローラ名#アクション名"
+
+アクション
+　　コントローラ内における処理のカテゴリー。
+
+　　index       一覧表示ページを表示するリクエストに対応して動く
+　　new         新規投稿ページを表示するリクエストに対応して動く
+　　create      データの投稿を行うリクエストに対応して動く
+　　show        個別詳細ページを表示するリクエストに対応して動く
+　　edit        投稿編集ページを表示するリクエストに対応して動く
+　　update      データの編集を行うリクエストに対応して動く
+　　destroy     データの削除を行うリクエストに対応して動く
+
+マイグレーションファイル
+    def change
+        create_table :テーブル名 do |t|
+            t.データ型 :カラム名
+            t.timestamps
+        end
+    end
+
+カラムの型
+    integer
+    string
+    text
+    boolean
+    datetime
+
+
+ActiveRecordメソッド
+　　モデルがデータベースに対して使用できるメソッド群。
+    all         全件取得
+    find(id)    指定のidのレコードを取得
+    new         レコード（インスタンス）作成
+    save        レコード（インスタンス）保存
+
+HTMLのフォーム
+    &lt;form action="/posts" method="post"&gt;
+        &lt;input type="text" name="content"&gt;
+        &lt;input type="submit" value="投稿する"&gt;
+    &lt;/form&gt;
+
+    action属性      リクエストのURLを指定する。
+    method属性      リクエストに使用されるHTTPメソッドを指定する。
+
+ヘルパーメソッド
+    主にビューでHTMLタグを出現させたりテキストを加工するために使用されるメソッド群。
+    form_with   フォームの実装
+    link_to     リンクの実装
+
+    <%= form_with url: "/posts", method: :post, local: true do |form| %>
+        <%= form.text_field :content %>
+        <%= form.submit "投稿する" %>
+    <% end %>
+
+    フォーム部品のヘルパーメソッド
+        text_field      1行のテキストボックス
+        password_field  パスワード入力ボックス
+        check_box       チェックボックス
+        radio_button    ラジオボタン
+        submit          送信ボタン
+
+    <%= link_to "新規投稿", "/posts/new", method: :get %>
+
+                    </code>
+                </pre>
+            </div>
+        </div>
+        <footer>
+            <div class="footer-logo">波浪世界</div>
+            <div class="content"></div>
+        </footer>
+    </body>
+</html>
