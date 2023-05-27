@@ -125,12 +125,12 @@ t.references :カラム名
 
 オプションから自分以外のユーザーを選択し、自分とともにidをパラメーターに送る
 <!-- 中略 -->
-<select name="room[user_ids][]">
-  <option value="">チャットするユーザーを選択してください</option>
+&lt;select name="room[user_ids][]">
+  &lt;option value="">チャットするユーザーを選択してください&lt;/option>
   &lt;% User.where.not(id: current_user.id).each do |user| %>
-    <option value=&lt;%=user.id%>>&lt;%= user.name %></option>
+    &lt;option value=&lt;%=user.id%>>&lt;%= user.name %>&lt;/option>
   &lt;% end %>
-</select>
+&lt;/select>
 &lt;input name="room[user_ids][]" type="hidden" value=&lt;%= current_user.id %>>
 <!-- 中略 -->
 

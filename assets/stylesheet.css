@@ -72,7 +72,7 @@ body{
     margin: 0;
     width: 100%;				
     font-family: 'メイリオ', 'meiryo';
-    line-height: 1.5em;
+    line-height: 1.6;
 }
 
 .content{
@@ -184,6 +184,8 @@ pre{
 }
 code{
     font-family: 'メイリオ', 'meiryo', monospace;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 @media (max-height: 599px) {
