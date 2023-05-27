@@ -117,6 +117,9 @@ header{
     border: 1px solid #efefef;
     padding: 8px;
 }
+.menu a:hover{
+    background-color: rgba(16, 16, 16, 1);
+}
 
 a{
     text-decoration: none;
@@ -186,6 +189,9 @@ li{
     margin-bottom: 0.5em;
     width: 200px;
     color: #0f0f0f;
+}
+.article_lists a:hover{
+    background-color: #ccc;
 }
 
 pre{
