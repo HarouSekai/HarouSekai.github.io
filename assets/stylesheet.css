@@ -101,6 +101,7 @@ header{
     font-weight: 600;
     top: 16px;
     left: 16px;
+    overflow-x: auto;
 }
 .menu{
     height: 48px;
