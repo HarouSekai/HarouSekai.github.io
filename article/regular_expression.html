@@ -41,11 +41,14 @@ match
 str = "Hello, world"
 str.match(/Hello/)
 =>#&lt;MatchData "Hallo">
-str[0]
+md = str.match(/Hello/)
+md[0]
 =>"Hello"
 str.match(/Good/)
 => nil
 
+\s
+半角スペース。sの後に全角スペースを入れて「\s　」とすると半角・全角スペース。
 
 gsub
 文字列内に指定した文字が複数含まれている場合、そのすべてを置換する。
