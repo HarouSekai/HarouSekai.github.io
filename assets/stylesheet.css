@@ -94,6 +94,7 @@ header{
 }
 
 #title{
+    max-width: calc(100vw - 32px - 68px);
     position: fixed;
     height: 48px;
     line-height: 48px;
@@ -112,6 +113,7 @@ header{
     align-items: center;
 }
 .menu a{
+    width: 68px;
     color: #fff;
     height: 48px;
     line-height: 32px;
