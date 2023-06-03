@@ -86,7 +86,7 @@ document.querySelectorAll("セレクタ名")
 
 
 ＜JavaScriptファイルの読み込み＞
-```HTML
+//HTML
 &lt;script src="javascriptファイル">&lt;/script>
 
 ＜イベント例＞
@@ -108,11 +108,13 @@ debugger
 value		：入力フォーム内の文字列を取得
 innerHTML
 length	：文字数を数える
-
-
-＜Ajaxコード例＞
-```memo.js
-
+										</code>
+								</pre>
+								<br>
+【Ajaxコード例】<br>
+memo.js
+<pre>
+	<code class="language-JavaScript">
 const buildHTML = (XHR) => {
 	const item = XHR.response.post;
 	const html = `
@@ -151,9 +153,10 @@ function post (){
 
                     </code>
                 </pre>
+								<br>
+								posts_controller.rb
 								<pre>
 									<code class="language-Ruby">
-```posts_controller.rb
 def create
 	post = Post.create(content: params[:content])
 	render json:{post: post}
