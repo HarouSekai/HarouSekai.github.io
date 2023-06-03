@@ -81,7 +81,7 @@ body{
     width: calc(100% - 2em);
     max-width: 990px;
     margin: 0 auto;
-    padding: 1em;
+    padding: 1em 0;
 }
 
 header{
@@ -207,6 +207,15 @@ code{
     font-family: 'メイリオ', 'meiryo', monospace;
     overflow-wrap: break-word;
     hyphens: auto;
+}
+
+/* index */
+.index-content{
+    display: flex;
+}
+.index-content ul{
+    width: 200px;
+    margin-right: 20px;
 }
 
 @media (max-width: 599px) {
