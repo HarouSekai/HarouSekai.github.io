@@ -25,7 +25,7 @@
         <div class="main">
             <div class="content">
                 <pre>
-                    <code>
+                    <code class="language-JavaScript">
 <!-- ここに記入 -->
 
 ＜セミコロンの決まり＞
@@ -149,15 +149,18 @@ function post (){
 	});
 };
 
-
+                    </code>
+                </pre>
+								<pre>
+									<code class="language-Ruby">
 ```posts_controller.rb
 def create
 	post = Post.create(content: params[:content])
 	render json:{post: post}
 	# jsonメソッドで、変数postにpostというキーを付けてjson形式で返す
 end
-                    </code>
-                </pre>
+									</code>
+								</pre>
             </div>
         </div>
         <footer>
