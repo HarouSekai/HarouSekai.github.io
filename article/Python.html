@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="../assets/script.js"></script>
+        <link rel="stylesheet" href="../assets/stylesheet.css">
+        <link rel="icon" href="../assets/favicon.png">
+        
+    </head>
+    <body>
+        <header>
+            <div class="content">
+                <div id="title"></div>
+                <div class="header-logo">
+                    <a href="../index.html">
+                        <span></span>
+                    </a>
+                </div>
+                <div class="menu">
+                    <a href="index.html?tag=技術記録">HOME</a>
+                </div>
+            </div>
+        </header>
+        <div class="main">
+            <div class="content">
+                <!-- ここに記入 -->
+script.py
+<pre>
+<code class="language-Python">
+from food import Food
+from drink import Drink
+
+food1 = Food('サンドイッチ', 500, 330)
+food2 = Food('チョコケーキ', 400, 450)
+food3 = Food('シュークリーム', 200, 180)
+
+foods = [food1, food2, food3]
+
+drink1 = Drink('コーヒー', 300, 180)
+drink2 = Drink('オレンジジュース', 200, 350)
+drink3 = Drink('エスプレッソ', 300, 30)
+
+drinks = [drink1, drink2, drink3]
+
+print('食べ物メニュー')
+index = 0
+for food in foods:
+    print(str(index) + '. ' + food.info())
+    index += 1
+
+print('飲み物メニュー')
+index = 0
+for drink in drinks:
+    print(str(index) + '. ' + drink.info())
+    index += 1
+
+print('--------------------')
+
+food_order = int(input('食べ物の番号を選択してください: '))
+selected_food = foods[food_order]
+
+drink_order = int(input('飲み物の番号を選択してください: '))
+selected_drink = drinks[drink_order]
+
+# コンソールから入力を受け取り、変数 count に代入してください
+count = int(input('何セット買いますか？(3つ以上で1割引): '))
+
+# selected_food と selected_drink のそれぞれに対して、 get_total_price メソッドを呼び出してください
+result = selected_food.get_total_price(count) + selected_drink.get_total_price(count)
+
+# 「 合計は〇〇円です 」となるように出力してください
+print('合計は' + str(result) + '円です')
+    
+</code>
+</pre>
+<br>
+menu_item.py
+<pre>
+<code class="language-Python">
+class MenuItem:
+def __init__(self, name, price):
+    self.name = name
+    self.price = price
+
+def info(self):
+    return self.name + ': ¥' + str(self.price)
+
+def get_total_price(self, count):
+    total_price = self.price * count
+
+    if count >= 3:
+        total_price *= 0.9
+
+    return round(total_price)
+
+</code>
+</pre>
+<br>
+food.py
+<pre>
+<code class="language-Python">
+from menu_item import MenuItem
+
+class Food(MenuItem):
+    def __init__(self, name, price, calorie):
+        super().__init__(name, price)
+        self.calorie = calorie
+    
+    def info(self):
+        return self.name + ': ¥' + str(self.price) + ' (' + str(self.calorie) + 'kcal)'
+    
+    def calorie_info(self):
+        print(str(self.calorie) + 'kcalです')
+    
+</code>
+</pre>
+<br>
+drink.py
+<pre>
+<code class="language-Python">
+from menu_item import MenuItem
+
+class Drink(MenuItem):
+    def __init__(self, name, price, amount):
+        super().__init__(name, price)
+        self.amount = amount
+
+    def info(self):
+        return self.name + ': ¥' + str(self.price) + ' (' + str(self.amount) + 'mL)'
+    
+</code>
+</pre>
+            </div>
+        </div>
+        <footer>
+            <div class="footer-logo">波浪世界</div>
+            <div class="content"></div>
+        </footer>
+    </body>
+</html>
