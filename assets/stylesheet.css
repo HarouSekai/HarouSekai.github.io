@@ -76,7 +76,7 @@ header .menu{
     align-items: center;
 }
 header .menu a{
-    width: 68px;
+    width: 4em;
     color: #fff;
     height: 48px;
     line-height: 32px;

@@ -129,10 +129,10 @@ drink.rb
 <code class="language-Ruby">
 require "./menu"
 
-class Drink &lt; Mwnu
+class Drink &lt; Menu
     attr_accessor :amount
 
-    def initilize(name:, price:, amount:)
+    def initialize(name:, price:, amount:)
         super(name: name, price: price)
         self.amount = amount
     end
