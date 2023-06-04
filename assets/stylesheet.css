@@ -1,8 +1,6 @@
 @import url(../stylesheets/prism.css);
 @import url(../stylesheets/reset.css);
 
-
-
 /* 共通======================================== */
 
 @font-face{
@@ -20,7 +18,7 @@ body{
 
 .content{
     width: calc(100% - 2em);
-    max-width: 990px;
+    max-width: 1024px;
     margin: 0 auto;
     padding: 1em 0;
 }
@@ -35,8 +33,7 @@ header{
     z-index: 10;
     color: #efefef;
 }
-
-#title{
+header #title{
     max-width: calc(100vw - 32px - 68px);
     position: fixed;
     height: 48px;
@@ -47,50 +44,19 @@ header{
     left: 16px;
     overflow-x: auto;
 }
-.menu{
-    height: 48px;
-    position: fixed;
-    top: 1em;
-    right: 1em;
-    display: flex;
-    align-items: center;
-}
-.menu a{
-    width: 68px;
-    color: #fff;
-    height: 48px;
-    line-height: 32px;
-    border: 1px solid #efefef;
-    padding: 8px;
-}
-.menu a:hover{
-    background-color: rgba(16, 16, 16, 1);
-}
 
-a{
-    text-decoration: none;
-}
-
-.main{
-    margin-top: 5em;
-    width: 100%;
-    min-height: calc(100vh - 9em);
-}
-
-.header-logo{
+header .header-logo{
     width: 5em;
     height: 3em;
     margin: 0 auto;
 }
-
-.header-logo a{
+header .header-logo a{
     display: block;
     width: 100%;
     height: 100%;
     padding: 0em 1em;
 }
-
-.header-logo a span{
+header .header-logo a span{
     display: block;
     width: 3em;
     height: 3em;
@@ -98,6 +64,32 @@ a{
     background-image: url(../assets/favicon.png);
     background-size: contain;
     background-repeat: no-repeat;
+}
+
+header .menu{
+    height: 48px;
+    position: fixed;
+    top: 1em;
+    right: 1em;
+    display: flex;
+    align-items: center;
+}
+header .menu a{
+    width: 68px;
+    color: #fff;
+    height: 48px;
+    line-height: 32px;
+    border: 1px solid #efefef;
+    padding: 8px;
+}
+header .menu a:hover{
+    background-color: rgba(16, 16, 16, 1);
+}
+
+.main{
+    margin-top: 5em;
+    width: 100%;
+    min-height: calc(100vh - 9em);
 }
 
 footer{
@@ -108,8 +100,7 @@ footer{
     background-color: #0f0f0f;
     color: #fff;
 }
-
-.footer-logo{
+footer .footer-logo{
     float: left;
     padding-left: 1em;
     height: 1.5em;
@@ -123,23 +114,30 @@ h2{
     border-bottom: 1px solid #afafaf;
 }
 
-li{
-    list-style: none;
+/* article/index */
+.article_lists{
+    width: calc(100% - 40px);
+    padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
-
-/* article */
+.article_lists > div{
+    width: 100%;
+    margin-bottom: 20px;
+}
 .article_lists a{
     display: inline-block;
     background-color: #efefef;
-    padding: 0.5em;
-    margin-bottom: 0.5em;
-    width: 200px;
+    padding: 10px;
+    width: 100%;
     color: #0f0f0f;
 }
 .article_lists a:hover{
     background-color: #ccc;
 }
 
+/* article */
 pre{
     width: 100%;
     white-space: pre-wrap;
@@ -150,20 +148,22 @@ code{
     hyphens: auto;
 }
 
-/* index */
-.index-content{
-    display: flex;
-}
-.index-content ul{
-    width: 200px;
-    margin-right: 20px;
-}
-
+/* 共通 */
 @media (max-width: 599px) {
     .header-logo{
         display: none;
     }
     .menu{
         background-color: rgba(16, 16, 16, 0.7);
+    }
+}
+@media (min-width:660px) {
+    .article_lists > div{
+        width: calc((100% - 20px)/2);
+    }
+}
+@media (min-width:980px) {
+    .article_lists > div{
+        width: calc((100% - 40px)/3);
     }
 }
