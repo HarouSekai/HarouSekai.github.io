@@ -17,10 +17,10 @@ body{
 }
 
 .content{
-    width: calc(100% - 2em);
+    width: calc(100% - 20px);
     max-width: 1024px;
     margin: 0 auto;
-    padding: 1em 0;
+    padding: 20px 0;
 }
 
 header{
@@ -116,8 +116,6 @@ h2{
 
 /* article/index */
 .article_lists{
-    width: calc(100% - 40px);
-    padding: 20px 0;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
