@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="refresh" content="3;url='article/index.html?tag=技術記録'">
+        <link rel="icon" href="assets/favicon.png">
+        <title>波浪世界</title>
+        <style>
+            @font-face{
+                /***横書き明朝***/
+                font-family: 'Kyokasho';
+                src: url(assets/Kyokasho.woff);
+            }
+            body{
+                margin: 0;
+                width: 100vw;
+                height: 100vh;
+                font-family: 'Kyokasho';
+                background-color: black;
+                color: white;
+            }
+            .wrapper{
+                width: 100%;
+                height: 100%;
+                position: relative;
+                overflow: hidden;
+            }
+            .content{
+                position: absolute;
+                width: 100%;
+                height: 18vw;
+                text-align: center;
+                top: calc(50% - 9vw);
+                animation: 0.01s linear 1 running harou;
+                animation-fill-mode: forwards;
+                animation-delay: 0.99s;
+                font-size: 15vw;
+                opacity: 0;
+            }
+            @keyframes harou {
+                0% {
+                    opacity: 0;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="content">
+                波浪世界
+            </div>
+        </div>
+    </body>
+</html>
