@@ -1,0 +1,33 @@
+<!doctypehtml><html lang=ja><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../assets/stylesheet.css rel=stylesheet><link href=../assets/favicon.png rel=icon><style>#main-content{font-size:0}h2{font-size:2rem}.article_lists{font-size:1.6rem}</style><title>技術記録</title><header><div class=content><div id=title></div><div class=header-logo><a href=../index.html><span></span></a></div><div class=menu><a href="index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content id=main-content></div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer><script>
+const lists = [
+    {h2: "RubyGems", div: [
+        {name: "rails", text: "Railsまとめ"},
+        {name: "rails2", text: "Railsその２"},
+        {name: "devise", text: "Devise"},
+        {name: "chat-app", text: "テキスト・画像投稿機能"},
+        {name: "ActiveStorage", text: "ActiveStorage/ストロングパラメーター"},
+        {name: "rubocop", text: "Rubocop"}
+    ]},
+    {h2: "JavaScript", div: [
+        {name: "JavaScript", text: "JavaScript"},
+        {name: "ajax", text: "Ajax"},
+        {name: "js1", text: "JavaScriptコード例"},
+        {name: "React", text: "React"}
+    ]},
+    {h2: "コラム", div: [
+        {name: "CLI", text: "Command Line"},
+        {name: "regular_expression", text: "正規表現"},
+        {name: "rspec", text: "Rspec"},
+        {name: "README", text: "テーブル設計例"},
+        {name: "er", text: "ER図"},
+        {name: "music", text: "定刻に音楽を流す"}
+    ]},
+    {h2: "言語", div: [
+        {name: "Java", text: "Java"},
+        {name: "Python", text: "Python"},
+        {name: "Ruby", text: "Ruby"},
+        {name: "SQL", text: "SQL"}
+    ]}
+];
+const articles = lists.map((list) => { let html = `<h2>${list.h2}</h2><div class=article_lists>${list.div.map((d) => { const dHtml = `<div><a href="${d.name}.html?tag=${d.text}">${d.text}</a></div>`; return dHtml; })}</div>`; html = html.replaceAll(',', ''); return html; }); const mainContent = document.getElementById("main-content"); mainContent.insertAdjacentHTML("afterbegin", articles);
+</script><script src=../assets/script.js></script>

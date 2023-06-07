@@ -8,7 +8,7 @@ window.addEventListener('load', function() {
   })();
   (function() {
     const prism = document.createElement("script");
-    prism.src = "../javascript/prism.js";
+    prism.src = "prism.js";
     document.head.appendChild(prism);
   })();
   (function() {

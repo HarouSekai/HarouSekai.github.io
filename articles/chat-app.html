@@ -1,31 +1,6 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../assets/stylesheet.css">
-        <link rel="icon" href="../assets/favicon.png">
-        
-    </head>
-    <body>
-        <header>
-            <div class="content">
-              <div id="title"></div>
-                <div class="header-logo">
-                    <a href="../index.html">
-                        <span></span>
-                    </a>
-                </div>
-                <div class="menu">
-                    <a href="index.html?tag=技術記録">HOME</a>
-                </div>
-            </div>
-        </header>
-        <div class="main">
-            <div class="content">
-                <pre>
-                    <code class="language-Ruby">
-<!-- ここに記入 -->
+<!doctypehtml><html lang=ja><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../assets/stylesheet.css rel=stylesheet><link href=../assets/favicon.png rel=icon><title>Railsまとめ</title><header><div class=content><div id=title></div><div class=header-logo><a href=../index.html><span></span></a></div><div class=menu><a href="index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content><pre>
+  <code class=language-Ruby>
+
 テキスト・画像投稿機能まとめ
 
 中間テーブル
@@ -34,20 +9,20 @@ throughオプション
 
 【例】app/models/photo.rb
 class Photo &lt; ApplicationRecord
-  has_many :photo_tags
-  has_many :tags, through: :photo_tags
+has_many :photo_tags
+has_many :tags, through: :photo_tags
 end
 
 【例】app/models/tag.rb
 class Tag &lt; ApplicationRecord
-  has_many :photo_tags
-  has_many :photos, through: :photo_tags
+has_many :photo_tags
+has_many :photos, through: :photo_tags
 end
 
 【例】app/models/photo_tag.rb
 class PhotoTag &lt; ApplicationRecord
-  belongs_to :photo
-  belongs_to :tag
+belongs_to :photo
+belongs_to :tag
 end
 
 ______________________________
@@ -114,7 +89,7 @@ authenticate_user!オウセンティケイト ユーザーメソッド
 ログイン状態によって表示するページを切り替えるdeviseのメソッド。
 
 class ApplicationController &lt; ActionController::Base
-  before_action :authenticate_user!
+before_action :authenticate_user!
 end
 
 
@@ -124,19 +99,19 @@ Railsで外部キーのカラムを追加する際に、用いる型。
 t.references :カラム名
 
 オプションから自分以外のユーザーを選択し、自分とともにidをパラメーターに送る
-<!-- 中略 -->
+
 &lt;select name="room[user_ids][]">
-  &lt;option value="">チャットするユーザーを選択してください&lt;/option>
-  &lt;% User.where.not(id: current_user.id).each do |user| %>
-    &lt;option value=&lt;%=user.id%>>&lt;%= user.name %>&lt;/option>
-  &lt;% end %>
+&lt;option value="">チャットするユーザーを選択してください&lt;/option>
+&lt;% User.where.not(id: current_user.id).each do |user| %>
+&lt;option value=&lt;%=user.id%>>&lt;%= user.name %>&lt;/option>
+&lt;% end %>
 &lt;/select>
 &lt;input name="room[user_ids][]" type="hidden" value=&lt;%= current_user.id %>>
-<!-- 中略 -->
+
 
 collectionコレクションオプション
 collectionオプションは、指定したインスタンス変数の中にある要素の数だけ、部分テンプレートを繰り返し呼び出すことができるオプション。
- &lt;%= render partial: 'message', collection: @messages %>
+&lt;%= render partial: 'message', collection: @messages %>
 部分テンプレート内では、@messagesから取り出された一つ一つの要素を、部分テンプレートと同じ名前のmessageとして扱える。
 
 
@@ -145,23 +120,23 @@ configディレクトリに用意されている、Railsアプリケーション
 application.rbファイルには、そのRailsアプリケーションの開発環境すべてにおいて共通となる設定を記述します。
 
 module ChatApp
-  class Application &lt; Rails::Application
-    # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0 
-    config.i18n.default_locale = :ja
-    config.time_zone = 'Tokyo'
-   # 中略
+class Application &lt; Rails::Application
+# Initialize configuration defaults for originally generated Rails version.
+config.load_defaults 6.0 
+config.i18n.default_locale = :ja
+config.time_zone = 'Tokyo'
+# 中略
 
 lメソッド
 日付や時刻を表示する。
- &lt;%= l message.created_at %>
+&lt;%= l message.created_at %>
 
 
 dependentディペンデントオプション
 dependentオプションは親モデルを削除した時に、親モデルと関連している子モデルに対する挙動を指定するオプションです。
 
 class Tweet &lt; ApplicationRecord
-   has_many :comments, dependent: :destroy
+has_many :comments, dependent: :destroy
 end
 
 
@@ -181,7 +156,7 @@ ImageProcessing
 brew install imagemagick
 gem 'mini_magick'
 gem 'image_processing', '~> 1.2'
- bundle install
+bundle install
 
 rails active_storage:install
 
@@ -189,15 +164,15 @@ has_one_attachedメソッド
 カkレコードとファイルを1対1の関係で紐づける。
 
 class モデル &lt; ApplicationRecord
-  has_one_attached :ファイル名
+has_one_attached :ファイル名
 end
 
 class Message &lt; ApplicationRecord
-  belongs_to :room
-  belongs_to :user
-  has_one_attached :image
+belongs_to :room
+belongs_to :user
+has_one_attached :image
 
-  validates :content, presence: true
+validates :content, presence: true
 end
 
 image_tagメソッド
@@ -209,8 +184,8 @@ attached?メソッド
 variantメソッド
 ファイルの表示サイズを指定
 
-  &lt;%= image_tag message.image.variant(resize: '500x500'), class: 'message-image' if message.image.attached? %>
- 
+&lt;%= image_tag message.image.variant(resize: '500x500'), class: 'message-image' if message.image.attached? %>
+
 エラーメッセージを英語に設定
 （rails_helper.rb）
 I18n.locale = "en"
@@ -221,15 +196,15 @@ afterメソッド
 任意の処理の後に指定の処理を実行。
 （メッセージモデルのファクトリー）
 FactoryBot.define do
-  factory :message do
-    content {Faker::Lorem.sentence}
-    association :user
-    association :room
+factory :message do
+content {Faker::Lorem.sentence}
+association :user
+association :room
 
-    after(:build) do |message|
-      message.image.attach(io: File.open('public/images/test_image.png'), filename: 'test_image.png')
-    end
-  end
+after(:build) do |message|
+message.image.attach(io: File.open('public/images/test_image.png'), filename: 'test_image.png')
+end
+end
 end
 
 
@@ -257,48 +232,39 @@ _______________________________
 require 'rails_helper'
 
 RSpec.describe Post, type: :model do
-  before do
-    @post = FactoryBot.build(:post)
-  end
-
-  describe '新規投稿' do
-    context '投稿できる場合' do
-      it 'titleとcontentとimageが存在していれば保存できる' do
-        expect(@post).to be_valid
-      end
-    end
-    context '投稿できない場合' do
-      it 'titleが空では保存できない' do
-        @post.title = ''
-        @post.valid?
-        expect(@post.errors.full_messages).to include("Title can't be blank")
-      end
-      it 'contentが空では保存できない' do
-        @post.content = ''
-        @post.valid?
-        expect(@post.errors.full_messages).to include("Content can't be blank")
-      end
-      it 'imageが空では保存できない' do
-        @post.image = nil
-        @post.valid?
-        expect(@post.errors.full_messages).to include("Image can't be blank")
-      end
-      it '紐づくユーザーが存在しないと保存できない' do
-        @post.user = nil
-        @post.valid?
-        expect(@post.errors.full_messages).to include('User must exist')
-      end
-    end
-  end
+before do
+@post = FactoryBot.build(:post)
 end
-                    </code>
-                </pre>
-            </div>
-        </div>
-        <footer>
-            <div class="footer-logo">波浪世界</div>
-            <div class="content"></div>
-        </footer>
-        <script src="../assets/script.js"></script>
-    </body>
-</html>
+
+describe '新規投稿' do
+context '投稿できる場合' do
+it 'titleとcontentとimageが存在していれば保存できる' do
+expect(@post).to be_valid
+end
+end
+context '投稿できない場合' do
+it 'titleが空では保存できない' do
+@post.title = ''
+@post.valid?
+expect(@post.errors.full_messages).to include("Title can't be blank")
+end
+it 'contentが空では保存できない' do
+@post.content = ''
+@post.valid?
+expect(@post.errors.full_messages).to include("Content can't be blank")
+end
+it 'imageが空では保存できない' do
+@post.image = nil
+@post.valid?
+expect(@post.errors.full_messages).to include("Image can't be blank")
+end
+it '紐づくユーザーが存在しないと保存できない' do
+@post.user = nil
+@post.valid?
+expect(@post.errors.full_messages).to include('User must exist')
+end
+end
+end
+end
+  </code>
+</pre></div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer><script src=../assets/script.js></script>

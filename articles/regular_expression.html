@@ -1,31 +1,6 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../assets/stylesheet.css">
-        <link rel="icon" href="../assets/favicon.png">
-        
-    </head>
-    <body>
-        <header>
-            <div class="content">
-                <div id="title"></div>
-                <div class="header-logo">
-                    <a href="../index.html">
-                        <span></span>
-                    </a>
-                </div>
-                <div class="menu">
-                    <a href="index.html?tag=技術記録">HOME</a>
-                </div>
-            </div>
-        </header>
-        <div class="main">
-            <div class="content">
-                <pre>
-                    <code class="language-Ruby">
-<!-- ここに記入 -->
+<!doctypehtml><html lang=ja><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../assets/stylesheet.css rel=stylesheet><link href=../assets/favicon.png rel=icon><header><div class=content><div id=title></div><div class=header-logo><a href=../index.html><span></span></a></div><div class=menu><a href="index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content><pre>
+    <code class=language-Ruby>
+
 sub
 文字列を置き換える。
 
@@ -138,22 +113,13 @@ name.match(/マイケル(?=ジョーダン)/)
 
 Railsのモデル
 with_options presence: true, format: { with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/, message: '全角文字を使用してください' } do
-  validates :first_name
-  validates :last_name
+validates :first_name
+validates :last_name
 end
 
 Railsのモデル
 PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/i.freeze
 validates_format_of :password, with: PASSWORD_REGEX, message: 'には英字と数字の両方を含めて設定してください' 
 
-                    </code>
-                </pre>
-            </div>
-        </div>
-        <footer>
-            <div class="footer-logo">波浪世界</div>
-            <div class="content"></div>
-        </footer>
-        <script src="../assets/script.js"></script>
-    </body>
-</html>
+    </code>
+</pre></div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer><script src=../assets/script.js></script>

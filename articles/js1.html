@@ -1,0 +1,76 @@
+<!doctypehtml><html lang=ja><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../assets/stylesheet.css rel=stylesheet><link href=../assets/favicon.png rel=icon><header><div class=content><div id=title></div><div class=header-logo><a href=../index.html><span></span></a></div><div class=menu><a href="index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content>script.js<pre>
+    <code class=language-JavaScript>
+    import { dog1, dog2 } from "./data/dogData";
+    
+    console.log("---------");
+    dog1.info();
+    console.log("---------");
+    dog2.info();
+    </code>
+    </pre><br>dogData.js<pre>
+        <code class=language-JavaScript>
+    import readlineSync from "readline-sync";
+    
+    import Dog from "../class/dog";
+    
+    const dog1 = new Dog("レオ", 4, "チワワ");
+    
+    const name = readlineSync.question("名前を入力してください: ");
+    
+    const age = readlineSync.questionInt("年齢を入力してください: ");
+    
+    const breed = readlineSync.question("犬種を入力してください: ");
+    
+    const dog2 = new Dog(name, age, breed);
+    
+    export { dog1, dog2 };
+        </code>
+    </pre><br>dog.js<pre>
+        <code class=language-JavaScript>
+    import chalk from "chalk";
+    import Animal from "./animal";
+    
+    class Dog extends Animal {
+        constructor(name, age, breed) {
+        super(name, age);
+        this.breed = breed;
+        }
+    
+        info() {
+        this.greet();
+        console.log(chalk.yellow(`名前は${this.name}です`));
+        console.log(chalk.bgCyan(`犬種は${this.breed}です`));
+        console.log(`${this.age}歳です`);
+        const humanAge = this.getHumanAge();
+        console.log(`人間年齢で${humanAge}歳です`);
+        }
+    
+        getHumanAge() {
+        return this.age * 7;
+        }
+    }
+    
+    export default Dog;
+        </code>
+    </pre><br>animal.js<pre>
+        <code class=language-JavaScript>
+    class Animal {
+        constructor(name, age) {
+            this.name = name;
+            this.age = age;
+        }
+        
+        greet() {
+            console.log("こんにちは");
+        }
+        
+        info() {
+            this.greet();
+            console.log(`名前は${this.name}です`);
+            console.log(`${this.age}歳です`);
+        }
+        }
+        
+        export default Animal;
+        </code>
+    </pre></div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer><script src=../assets/script.js></script>
