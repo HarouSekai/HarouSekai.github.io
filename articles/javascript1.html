@@ -1,0 +1,177 @@
+<!doctypehtml><html lang=ja><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../assets/stylesheet.css rel=stylesheet><link href=../assets/favicon.png rel=icon><header><div class=content><div id=title></div><div class=header-logo><a href=../index.html><span></span></a></div><div class=menu><a href="index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content><pre>
+	<code class=language-JavaScript>
+
+
+＜セミコロンの決まり＞
+
+・ルール上セミコロンを付ける
+（１）変数・定数の定義
+（２）メソッド
+（３）関数式（無名関数）
+（４）関数式（即時関数）
+（５）関数式（アロー関数）
+
+・ルール上セミコロンを付けない
+（１）関数宣言
+（２）if文、for文など
+______________________________________
+関数宣言
+
+function 関数名(引数){
+処理
+};
+
+_______________________________________
+関数式（無名関数）
+
+const 定数 = function(){
+処理
+};
+
+_______________________________________
+関数式（即時関数）
+
+(function 関数名(仮引数){
+処理
+})(引数)
+
+_______________________________________________________________________
+アロー関数：無名関数、即時関数で使える。※DOMの一部で動作しないことが確認された。
+
+const 変数名 = () => {
+処理
+}
+
+_____________________
+配列を操作するメソッド
+
+pushメソッド
+配列の最後に要素を追加する。
+const numbers = [1, 2, 3]
+numbers.push(4);
+
+forEachメソッド
+配列内の要素を順番に取り出して、すべての要素に繰り返し処理を行う。
+const numbers = [1, 2, 3];
+numbers.forEach((number) => {
+console.log(number);
+//引数に入っている関数をコールバック関数と呼ぶ。
+});
+
+findメソッド
+条件式にあう1つ目の要素を配列の中から取り出す。
+const numbers = [1,3,5,7];
+const foundNumber = numbers.find((number) => {
+return number > 3;
+});
+=> foundNumber === 5
+
+filterメソッド
+条件に合う要素のみを取り出して新しい配列を作る。
+const numbers = [1,3,5,7];
+const filteredNumbers = numbers.filter((number){
+return number > 3;
+});
+=> filteredNumbers === [5,7]
+
+mapメソッド
+配列のすべての要素に同じ処理をして新しい配列を作る。
+const numbers = [1, 2, 3];
+const doubledNumbers = numbers.map((number) => {
+return number * 2;
+});
+=> doubledNumbers === [2, 4, 6]
+
+_____________________________
+DOM
+
+＜HTML要素の取得＞
+document.getElementById("id名")
+document.getElementsByClassName("class名")
+document.querySelectorAll("セレクタ名")
+
+
+＜JavaScriptファイルの読み込み＞
+//HTML
+&lt;script src="javascriptファイル">&lt;/script>
+
+＜イベント例＞
+load
+click
+mouseover
+mouseout
+keyup
+
+＜イベント発火元の要素を取得＞
+this
+
+＜メソッド＞
+addEventListener('イベント名', 関数)
+setAttribute("属性", "値")
+removeAttribute("属性")
+getAttribute("属性")
+debugger
+value		：入力フォーム内の文字列を取得
+innerHTML
+length	：文字数を数える
+
+＜オブジェクト＞
+//オブジェクト
+const user = {
+name: "人";
+greet: () => {
+console.log("こんにちは");
+}
+}
+
+//userオブジェクトの関数の呼び出し
+user.greet();
+	</code>
+</pre><br>【Ajaxコード例】<br>memo.js<pre>
+<code class=language-JavaScript>
+const buildHTML = (XHR) => {
+const item = XHR.response.post;
+const html = `
+&lt;div class="post">
+&lt;div class="post-date">
+投稿日時：${item.created_at}
+&lt;/div>
+&lt;div class="post-content">
+${item.content}
+&lt;/div>
+&lt;/div>`;
+return html;
+};
+
+function post (){
+const submit = document.getElementById("submit");
+submit.addEventListener("click", (e) => {
+e.preventDefault();
+const form = document.getElementById("form");
+const formData = new FormData(form);
+const XHR = new XMLHttpRequest();
+XHR.open("POST", "/posts", true);
+XHR.responseType = "json";
+XHR.send(formData);
+XHR.onload = () => {
+if (XHR.status != 200) {
+alert(`Error ${XHR.status}: ${XHR.statusText}`);
+return null;
+};
+const list = 
+list.insertAdjacentHTML("afterend", buildHTML(XHR));
+formText.value = "";
+};
+});
+};
+
+	</code>
+</pre><br>posts_controller.rb<pre>
+<code class=language-Ruby>
+def create
+post = Post.create(content: params[:content])
+render json:{post: post}
+# jsonメソッドで、変数postにpostというキーを付けてjson形式で返す
+end
+</code>
+</pre></div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer><script src=../assets/script.js></script>
