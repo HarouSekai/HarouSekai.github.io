@@ -1,0 +1,15 @@
+<!doctypehtml><html lang=ja><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../assets/stylesheet.css rel=stylesheet><script src=../assets/script.js></script><link href=../assets/favicon.png rel=icon><title>Railsまとめ</title><header><div class=content><div id=title></div><div class=header-logo><a href=../index.html><span></span></a></div><div class=menu><a href="index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content>
+                <!-- ここに記入 -->
+<pre>
+<code class="lang-Java">
+  | 状況                                          | 自動デプロイ前にやること                                                                       | 備考      |
+  | --------------------------------------------- | ------------------------------------------------------------------------------------------- | --------- |
+  | 1. ローカルでVSCodeを修正した場合               | 変更点をリモートリポジトリにcommit, pushする                                                   | 該当時のみ |
+  | 2. ローカルでデータベース関連の内容を修正した場合 | 本番環境で「rails db:drop RAILS_ENV=production」「rails db:create RAILS_ENV=production」を実行 | 該当時のみ |
+  |                                               | （オプションとして「DISABLE_DATABASE_ENVIRONMENT_CHECK=1」を付ける）                            |           |
+  | 3. Nginxを修正した場合                         | 「sudo systemctl restart nginx」を実行                                                        | 該当時のみ |
+  | 4. 再度自動デプロイを実行する場合               | 一度プロセスをkillしたうえで「bundle exec cap production deploy」を実行                          | 1,2の場合 |
+  | （本番環境でサーバー再起動をする場合）           |                                                                                               |          |
+</code>
+</pre>
+</div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer>
