@@ -1,0 +1,108 @@
+<!doctypehtml><html lang=ja><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../assets/stylesheet.css rel=stylesheet><script src=../assets/script.js></script><link href=../assets/favicon.png rel=icon><header><div class=content><div id=title></div><div class=header-logo><a href=../index.html><span></span></a></div><div class=menu><a href="index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content>
+  <!-- ここに記入 -->
+<h2>繰り返し処理</h2>
+<h3>case文</h3>
+<pre>
+<code class="language-Ruby">
+  country = "Japan"
+
+  case country
+  when "Japan"
+   puts "こんにちは"
+  when "America"
+   puts "Hello"
+  when "France"
+   puts "Bonjour"
+  when "China"
+   puts "你好"
+  when "Italy"
+   puts "Buon giorno"
+  when "Germany"
+   puts "Guten Tag"
+  else
+   puts "..."
+  end
+</code>
+</pre>
+<h3>while文</h3>
+<pre>
+<code class="language-Ruby">
+  number = 0
+
+  while number &lt;= 10
+   if number == 5
+     break
+   end
+   puts number
+   number += 1
+  end
+</code>
+</pre>
+
+<h2>ブロック</h2>
+<h3>yield</h3>
+<pre>
+<code class="language-Ruby">
+  def greeting
+  puts "Hello"
+  yield("Good afternoon")
+ end
+ 
+ greeting do |text|
+  puts text
+ end
+ 
+ # ターミナル出力結果
+ # Hello
+ # Good afternoon
+
+
+ def greeting(&block)
+ puts "Hello"
+ block.call("Goodbye")
+end
+
+greeting do |text|
+ puts text
+end
+
+# ターミナル出力結果
+# Hello
+# Goodbye
+</code>
+</pre>
+上記のコードでは、メソッドの引数としてブロックを受け取るために、メソッドの定義部分で<code class="hi">&block</code>と書いている。<br>
+このように、「&引数名」の形でブロックを受け取る引数のことをブロック引数と呼ぶ。
+<br>そのブロックを実行するために<code class="hi">call</code>メソッドを実行している。今回は<code class="hi">Goodby</code>という文字列をブロックに渡している。
+
+<h2>例外処理</h2>
+<pre>
+<code class="language-Ruby">
+  namespace :distribute_ticket do
+  desc "全ユーザーのticket_countをrescueしながら10増加させる"
+  task rescue: :environment do
+    User.find_each do |user|
+      begin
+        user.increment!(:ticket_count, 10)
+      rescue => e
+        Rails.logger.debug e.message
+      end
+    end
+  end
+
+  desc "全ユーザーの中にticket_countが10枚追加されると最大値より大きくなるレコードがある場合に例外を発生させる"
+  task raise: :environment do
+    User.find_each do |user|
+      begin
+        if user.ticket_count > 2147483647 - 10
+          raise RangeError, "#{user.id}は、チケット取得可能枚数の上限を超えてしまいます！"
+        end
+      rescue => e
+        Rails.logger.debug e.message
+      end
+    end
+  end
+end
+</code>
+</pre>
+</div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer>
