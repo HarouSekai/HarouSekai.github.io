@@ -1,0 +1,429 @@
+<!doctypehtml><html lang=ja><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../assets/stylesheet.css rel=stylesheet><script src=../assets/script.js></script><link href=../assets/favicon.png rel=icon><header><div class=content><div id=title></div><div class=header-logo><a href=../index.html><span></span></a></div><div class=menu><a href="index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content>
+  <div id="menu">
+    <label id="menu-btn">
+        <div></div>
+        <div></div>
+        <div></div>
+    </label>
+    <div id="menu-items">
+        <div id="close-btn">X</div>
+        <ul>
+            <li>
+                <a href="#intro">イントロ</a>
+            </li>
+            <li>
+              <a href="#layout">レイアウト</a>
+            </li>
+            <li>
+              <a href="#rowColumn">Row/Column</a>
+            </li>
+            <li>
+              <a href="#text_layout">テキストの配置調整</a>
+            </li>
+            <li>
+              <a href="#text_to_module">テキストの外部ファイルへの書き出し</a>
+            </li>
+            <li>
+              <a href="#exc">コード例</a>
+            </li>
+        </ul>
+    </div>
+</div>
+  <!-- ここに記入 -->
+  <h2 id="intro">イントロ</h2>
+<pre>
+  <code class="language-Kotlin">
+    class MainActivity : ComponentActivity() {
+      override fun onCreate(savedInstanceState: Bundle?) {
+          super.onCreate(savedInstanceState)
+          setContent {
+              GreetingCardTheme {
+                  // A surface container using the 'background' color from the theme
+                  Surface(
+                      modifier = Modifier.fillMaxSize(),
+                      color = MaterialTheme.colors.background
+                  ) {
+                      Greeting("Android")
+                  }
+              }
+          }
+      }
+   }
+  </code>
+</pre>
+<pre>
+  <code class="hi">onCreate()</code>関数
+  アプリのエントリポイント。他の関数を呼び出してユーザーインターフェースを構築する。Kotlinプログラムのmain()関数に対応する。
+
+  <code class="hi">setContent()</code>関数
+  コンポーズ可能な関数を介してレイアウトを定義するために使用される。
+
+  <code class="hi">@Composable</code>アノテーション
+  これが付いた関数はsetContent()関数や他のコンポーズ可能な関数から呼び出せる。また、入力を受け取り、画面に表示される内容を生成する。
+</pre><br>
+
+<pre>
+  <code class="language-Kotlin">
+    @Composable
+    fun Greeting(name: String) {
+       Text(text = "Hello $name!")
+    }
+  </code>
+</pre><br>
+
+<pre>
+  <code class="language-Kotlin">
+    @Preview(showBackground = true)
+    @Composable
+    fun DefaultPreview() {
+       GreetingCardTheme {
+           Greeting("Meghan")
+       }
+    }
+  </code>
+</pre>
+<pre>
+  <code class="hi">DefaultPreview()</code>関数
+  アプリ全体をビルドせずにアプリの外観を確認できる関数。
+  @Preview アノテーションを付ける。
+
+  <code class="hi">@Preview(showBackground = true)</code>
+  アプリのプレビュー背景を追加する。
+</pre>
+<Br>
+
+背景色の追加
+<pre>
+  <code class="language-Kotlin">
+  import androidx.compose.ui.graphics.Color
+  
+  @Composable
+  fun Greeting(name: String) {
+      Surface(color = Color.Magenta) {
+          Text(text = "Hi, my name is $name!")
+      }
+  }
+  </code>
+</pre>
+
+<h2 id="layout">レイアウト</h2>
+パディングの追加
+<pre>
+  <code class="language-Kotlin">
+  import androidx.compose.ui.unit.dp
+  import androidx.compose.foundation.layout.padding
+
+  @Composable
+  fun Greeting(name: String) {
+    Surface(color = Color.Magenta) {
+        Text(text = "Hi, my name is $name!", modifier = Modifier.padding(24.dp))
+    }
+  }
+  </code>
+</pre><br>
+フォントサイズの変更
+<pre>
+  <code class="language-Kotlin">
+    Text(
+      text = message,
+      fontSize = 36.sp
+    )
+  </code>
+</pre><br>
+
+要素を横並びにする
+<pre>
+  <code class="language-Kotlin">
+    @Composable
+    fun BirthdayGreetingWithText(message: String, from: String, modifier: Modifier = Modifier)  {
+        Row(modifier = modifier) {
+            Text(
+                text = message,
+                fontSize = 36.sp,
+           )
+            Text(
+                text = from,
+                fontSize = 24.sp,
+           )
+       }
+    }
+  </code>
+</pre><br>
+
+要素を縦並びにする
+<pre>
+  <code class="language-Kotlin">
+    import androidx.compose.foundation.layout.Column
+
+    @Composable
+    fun BirthdayGreetingWithText(message: String, from: String, modifier: Modifier = Modifier) {
+       Column(modifier = modifier) {
+           Text(
+               text = message,
+               fontSize = 36.sp,
+           )
+           Text(
+               text = from,
+               fontSize = 24.sp,
+           )
+       }
+    }
+  </code>
+</pre><br>
+画像の追加
+<pre>
+  <code class="language-Kotlin">
+    val image = painterResource(R.drawable.androidparty)
+    //画像ファイルにアクセス
+
+    Image(
+        painter = image
+        //画像の追加
+
+        contentDescription = null
+        //読み上げコンテンツをなしにする
+    )
+  </code>
+</pre><br>
+Box レイアウト
+・要素を別の要素の上に重ねる
+・含まれる要素の配置を設定する
+<pre>
+  <code class="language-Kotlin">
+    @Composable
+    fun BirthdayGreetingWithImage(message: String, from: String, modifier: Modifier = Modifier) {
+        val image = painterResource(R.drawable.androidparty)
+        //Step 3 create a box to overlap image and texts
+        Box {
+            Image(
+                painter = image,
+                contentDescription = null
+            )
+            BirthdayGreetingWithText(message = message, from = from)
+            //戻り値はText()
+        }
+    }
+  </code>
+</pre><br>
+画像のサイズを調整
+<pre>
+  <code class="language-Kotlin">
+    Image(
+      painter = image,
+      contentDescription = null,
+      contentScale = ContentScale.Crop
+      //画像の幅と高さを、それぞれ画面の幅及び高さ以上にする
+      //background-size: over に等しい
+    )
+  </code>
+</pre><br>
+<h3 id="rowColumn">Row/Column</h3>
+<pre>
+  <code class="hi">Row</code>の子要素の位置を設定
+  horizontalArrangement引数
+  verticalAlignment引数
+
+  <code class="hi">Column</code>の子要素の位置を設定
+  verticalAlignment引数
+  horizontalAlignment引数
+
+
+  <code class="hi">Column</code>の子要素の位置を定義
+
+  Equal Weight
+  親要素を等分
+
+  Space Between
+  Space Around
+  Space Evenly
+
+  Top
+  上揃え
+
+  Center
+
+  Bottom
+  下揃え
+
+  <code class="hi">Row</code>の子要素の位置を定義
+  EqualWeight
+  親要素を等分
+
+  Space Between
+  Space Around
+  Space Evenly
+
+  End
+  右揃え
+
+  Center
+
+  Start
+  左揃え
+</pre>
+<h3 id="text_layout">テキストの配置調整</h3>
+<pre>
+  <code class="language-Kotlin">
+    Column(
+      modifier = modifier.fillMaxSize(),
+      //列レイアウトの高さと幅が、使用できる最大の高さと幅に設定される
+
+      verticalArrangement = Arrangement.Top,
+      //テキスト要素を上部に配置
+
+      horizontalAlignment = Alignment.CenterHorizontally
+      //水平軸の中央に揃える
+    ) {
+     //...
+    }
+  </code>
+</pre><br>
+
+テキストの上部にpaddingを追加
+<pre>
+  <code class="language-Kotlin">
+    androidx.compose.foundation.layout.padding
+    androidx.compose.ui.unit.dp
+
+    Text(
+      text = message,
+      fontSize = 36.sp,
+      modifier = Modifier
+          .padding(top = 16.dp)
+    )
+  </code>
+</pre>
+<h3 id="text_to_module">テキストの外部ファイルへの書き出し</h3>
+app > res > values > strings.xml にテキストを移動
+<pre>
+  <code class="language-xml">
+    &lt;resources>
+      &lt;string name="app_name">Happy Birthday&lt;/string>
+      &lt;string name="happy_birthday_text">Happy Birthday Sam!&lt;/string>
+      &lt;string name="signature_text">- from Emma&lt;/string>
+    &lt;/resources>
+  </code>
+</pre><br>
+テキストの読み込み
+<pre>
+  <code class="language-Kotlin">
+    @Preview(showBackground = false)
+    @Composable
+    private fun BirthdayCardPreview() {
+       HappyBirthdayTheme {
+           BirthdayGreetingWithImage( stringResource(R.string.happy_birthday_text),
+               stringResource(R.string.signature_text))
+       }
+    }
+  </code>
+</pre><br>
+<h3 id="exc">コード例</h3>
+<pre>
+  <code class="language-Kotlin">  
+
+package com.example.happybirthday
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.happybirthday.ui.theme.HappyBirthdayTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            HappyBirthdayTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    GreetingImage(
+                        stringResource(R.string.happy_birthday_text),
+                        stringResource(R.string.signature_text)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun GreetingText(message: String, from: String, modifier: Modifier = Modifier) {
+    // Create a column so that texts don't overlap
+    Column(
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier
+    ) {
+        Text(
+            text = message,
+            fontSize = 100.sp,
+            lineHeight = 116.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(top = 16.dp)
+        )
+        Text(
+            text = from,
+            fontSize = 36.sp,
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .padding(end = 16.dp)
+                .align(alignment = Alignment.End)
+
+        )
+    }
+}
+
+@Composable
+fun GreetingImage(message: String, from: String, modifier: Modifier = Modifier) {
+    // Create a box to overlap image and texts
+    Box(modifier) {
+        Image(
+            painter = painterResource(id = R.drawable.androidparty),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            alpha = 0.5F
+        )
+        GreetingText(
+            message = message,
+            from = from,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp)
+        )
+    }
+}
+
+@Preview(showBackground = false)
+@Composable
+private fun BirthdayCardPreview() {
+    HappyBirthdayTheme {
+        GreetingImage(
+            stringResource(R.string.happy_birthday_text),
+            stringResource(R.string.signature_text)
+        )
+    }
+}
+  </code>
+</pre><br>
+
+</div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer>
