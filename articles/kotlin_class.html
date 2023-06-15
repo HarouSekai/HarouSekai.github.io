@@ -18,6 +18,9 @@
             <li>
                 <a href="#commentary">解説</a>
             </li>
+            <li>
+                <a href="#non_arg">親クラスに引数を渡さない子クラス</a>
+            </li>
         </ul>
     </div>
   </div>
@@ -211,6 +214,51 @@ Total number of devices currently turned on: 0.
     <li>public</li>
     どこからでも呼び出し可能
 </ul>
+</pre>
+<h3 id="non_arg">親クラスに引数を渡さない子クラス</h3>
+<pre>
+    <code class="language-Kotlin">
+open class Phone(var isScreenLightOn: Boolean = false){
+    open fun switchOn() {
+        isScreenLightOn = true
+    }
+
+    fun switchOff() {
+        isScreenLightOn = false
+    }
+
+    fun checkPhoneScreenLight() {
+        val phoneScreenLight = if (isScreenLightOn) "on" else "off"
+        println("The phone screen's light is $phoneScreenLight.")
+    }
+}
+
+class FoldablePhone(var isFolded: Boolean = true): Phone() {
+    override fun switchOn() {
+        if (!isFolded) {
+            isScreenLightOn = true
+        }
+    }
+
+    fun fold() {
+        isFolded = true
+    }
+
+    fun unfold() {
+        isFolded = false
+    }
+}
+
+fun main() {
+    val newFoldablePhone = FoldablePhone()
+
+    newFoldablePhone.switchOn()
+    newFoldablePhone.checkPhoneScreenLight()
+    newFoldablePhone.unfold()
+    newFoldablePhone.switchOn()
+    newFoldablePhone.checkPhoneScreenLight()
+}
+    </code>
 </pre>
 
 </div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer>
