@@ -1,0 +1,216 @@
+<!doctypehtml><html lang=ja id="top"><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../assets/stylesheet.css rel=stylesheet><script src=../assets/script.js></script><link href=../assets/favicon.png rel=icon><header><div class=content><div id=title></div><div class=header-logo><a href=../index.html><span></span></a></div><div class=menu><a href="index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content>
+  <!-- ここに記入 -->
+  <style>a{color:#1a73e8}.toTop{position:fixed;bottom:0;right:0;font-size:4rem;width:6rem;height:6rem;background-color:rgba(128,128,128,0.5);text-align:center;line-height:6rem}</style>
+  <div class="toTop"><a href="#top">▲</a></div>
+  <table>
+    <tr>
+      <td><a href="#foreach">forEach()</a></td>
+      <td>コレクション内の各要素をループする。</td>
+    </tr>
+    <tr>
+      <td><a href="#map">map()</a></td>
+      <td>コレクション（ほとんどの場合はデータ型が異なるコレクション）内のアイテムを書式設定する。</td>
+    </tr>
+    <tr>
+      <td><a href="#filter">filter()</a></td>
+      <td>コレクションのサブセットを生成する。</td>
+    </tr>
+    <tr>
+      <td><a href="#groupby">groupBy()</a></td>
+      <td>関数の戻り値に基づいてコレクションを分割する。</td>
+    </tr>
+    <tr>
+      <td><a href="#fold">fold()</a></td>
+      <td>コレクションを単一の値に変換する。</td>
+    </tr>
+    <tr>
+      <td><a href="#sortedby">sortedBy()</a></td>
+      <td>指定したプロパティでコレクションを並べ替える。</td>
+    </tr>
+  </table>
+  <br>
+  forEach()
+  <pre id="foreach">
+    <code class="language-Kotlin">
+      forEach(action: (T) -> Unit)
+
+class Cookie(
+    val name: String,
+    val softBaked: Boolean,
+    val hasFilling: Boolean,
+    val price: Double
+)
+
+val cookies = listOf(
+    Cookie(
+        name = "Chocolate chip",
+        softBaked = false,
+        hasFilling = false,
+        price = 1.69
+    ),
+    Cookie(
+        name = "Banana Walnut",
+        softBaked = true,
+        hasFilling = false,
+        price = 1.49
+    ),
+    Cookie(
+        name = "Vanilla Creme",
+        softBaked = false,
+        hasFilling = true,
+        price = 1.59
+    ),
+    Cookie(
+        name = "Chocolate Peanut Butter",
+        softBaked = false,
+        hasFilling = true,
+        price = 1.49
+    ),
+    Cookie(
+        name = "Snickerdoodle",
+        softBaked = true,
+        hasFilling = false,
+        price = 1.39
+    ),
+    Cookie(
+        name = "Blueberry Tart",
+        softBaked = true,
+        hasFilling = true,
+        price = 1.79
+    ),
+    Cookie(
+        name = "Sugar and Sprinkles",
+        softBaked = false,
+        hasFilling = false,
+        price = 1.39
+    )
+)
+
+fun main() {
+  cookies.forEach {
+    println("Menu item: $it")
+  }
+}
+
+cookies.forEach {
+  println("Menu item: ${it.name}")
+}
+/*
+Menu item: Chocolate chip
+Menu item: Banana Walnut
+Menu item: Vanilla Creme
+Menu item: Chocolate Peanut Butter
+Menu item: Snickerdoodle
+Menu item: Blueberry Tart
+Menu item: Sugar and Sprinkles
+*/
+    </code>
+  </pre>
+  <br>
+  map()
+  <pre id="map">
+    <code class="language-Kotlin">
+    val fullMenu = cookies.map {
+      "${it.name} - $${it.price}"
+    }
+    println("Full menu:")
+    fullMenu.forEach {
+        println(it)
+    }
+    /*
+    Full menu:
+    Chocolate chip - $1.69
+    Banana Walnut - $1.49
+    Vanilla Creme - $1.59
+    Chocolate Peanut Butter - $1.49
+    Snickerdoodle - $1.39
+    Blueberry Tart - $1.79
+    Sugar and Sprinkles - $1.39
+    */
+    </code>
+  </pre>
+  <br>
+  filter()
+  <pre id="filter">
+    <code class="language-Kotlin">
+    val softBakedMenu = cookies.filter {
+      it.softBaked
+    }
+    println("Soft cookies:")
+    softBakedMenu.forEach {
+        println("${it.name} - $${it.price}")
+    }
+    /*
+    Soft cookies:
+    Banana Walnut - $1.49
+    Snickerdoodle - $1.39
+    Blueberry Tart - $1.79
+    */  
+    </code>
+  </pre>
+  <br>
+  groupBy()
+  <pre id="groupby">
+    <code class="language-Kotlin">
+      val groupedMenu = cookies.groupBy { it.softBaked }
+      val softBakedMenu = groupedMenu[true] ?: listOf()
+      val crunchyMenu = groupedMenu[false] ?: listOf()
+      println("Soft cookies:")
+      softBakedMenu.forEach {
+          println("${it.name} - $${it.price}")
+      }
+      println("Crunchy cookies:")
+      crunchyMenu.forEach {
+          println("${it.name} - $${it.price}")
+      }
+      /*
+      Soft cookies:
+      Banana Walnut - $1.49
+      Snickerdoodle - $1.39
+      Blueberry Tart - $1.79
+      Crunchy cookies:
+      Chocolate chip - $1.69
+      Vanilla Creme - $1.59
+      Chocolate Peanut Butter - $1.49
+      Sugar and Sprinkles - $1.39
+      */
+    </code>
+  </pre>
+  <br>
+  fold()
+  <pre id="fold">
+    <code class="language-Kotlin">
+      val totalPrice = cookies.fold(0.0) {total, cookie ->
+        total + cookie.price
+      }
+      println("Total price: $${totalPrice}")
+      /*
+      Total price: $10.83
+      */
+    </code>
+  </pre>
+  <br>
+  sortedBy()
+  <pre id="sortedby">
+    <code class="language-Kotlin">
+      val alphabeticalMenu = cookies.sortedBy {
+        it.name
+      }
+      println("Alphabetical menu:")
+      alphabeticalMenu.forEach {
+          println(it.name)
+      }
+      /*
+      Alphabetical menu:
+      Banana Walnut
+      Blueberry Tart
+      Chocolate Peanut Butter
+      Chocolate chip
+      Snickerdoodle
+      Sugar and Sprinkles
+      Vanilla Creme
+      */
+    </code>
+  </pre>
+  <br>
+  </div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer>
