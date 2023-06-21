@@ -1,5 +1,9 @@
 <!doctypehtml><html lang=ja><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../assets/stylesheet.css rel=stylesheet><script src=../assets/script.js></script><link href=../assets/favicon.png rel=icon><header><div class=content><div id=title></div><div class=header-logo><a href=../index.html><span></span></a></div><div class=menu><a href="index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content>
   <!-- ここに記入 -->
+  <h3>‼注意‼</h3>
+  <pre>
+    画像を取り込むときは、QUALITY TYPE を「<code class="hi">density</code>」にすること。
+  </pre>
 <pre>
 <code class="language-Kotlin">
   package com.example.diceroller
@@ -95,6 +99,7 @@
               //画像をresultの値によって可変にする
               contentDescription = result.toString()
               //画像を作成するときは「コンテンツの説明」を用意する
+              //ここまで書くとImageのエラーが解消される
           )
           Spacer(modifier = Modifier.height(16.dp))
           //高さ16.dpのスペースを入れる
