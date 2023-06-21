@@ -1,15 +1,28 @@
 <!doctypehtml><html lang=ja><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../assets/stylesheet.css rel=stylesheet><script src=../assets/script.js></script><link href=../assets/favicon.png rel=icon><title>Railsまとめ</title><header><div class=content><div id=title></div><div class=header-logo><a href=../index.html><span></span></a></div><div class=menu><a href="index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content>
                 <!-- ここに記入 -->
-<pre>
-<code class="lang-Java">
-  | 状況                                          | 自動デプロイ前にやること                                                                       | 備考      |
-  | --------------------------------------------- | ------------------------------------------------------------------------------------------- | --------- |
-  | 1. ローカルでVSCodeを修正した場合               | 変更点をリモートリポジトリにcommit, pushする                                                   | 該当時のみ |
-  | 2. ローカルでデータベース関連の内容を修正した場合 | 本番環境で「rails db:drop RAILS_ENV=production」「rails db:create RAILS_ENV=production」を実行 | 該当時のみ |
-  |                                               | （オプションとして「DISABLE_DATABASE_ENVIRONMENT_CHECK=1」を付ける）                            |           |
-  | 3. Nginxを修正した場合                         | 「sudo systemctl restart nginx」を実行                                                        | 該当時のみ |
-  | 4. 再度自動デプロイを実行する場合               | 一度プロセスをkillしたうえで「bundle exec cap production deploy」を実行                          | 1,2の場合 |
-  | （本番環境でサーバー再起動をする場合）           |                                                                                               |          |
-</code>
-</pre>
+<table>
+  <tr>
+    <th>状況</th><th>自動デプロイ前にやること</th><th>備考</th>
+  </tr>
+  <tr>
+    <td>1. ローカルでVSCodeを修正した場合</td>
+    <td>変更点をリモートリポジトリにcommit, pushする</td>
+    <td>該当時のみ</td>
+  </tr>
+  <tr>
+    <td>2. ローカルでデータベース関連の内容を修正した場合</td>
+    <td>本番環境で「<code class="hi">rails db:drop RAILS_ENV=production</code>」「<code class="hi">rails db:create RAILS_ENV=production</code>」を実行<br>（オプションとして「<code class="hi">DISABLE_DATABASE_ENVIRONMENT_CHECK=1</code>」を付ける）</td>
+    <td>該当時のみ</td>
+  </tr>
+  <tr>
+    <td>3. Nginxを修正した場合</td>
+    <td><code class="hi">sudo systemctl restart nginx</code>を実行</td>
+    <td>該当時のみ</td>
+  </tr>
+  <tr>
+    <td>4. 再度自動デプロイを実行する場合<br>（本番環境でサーバー再起動をする場合）</td>
+    <td>一度プロセスをkillしたうえで<code class="hi">bundle exec cap production deploy</code>を実行</td>
+    <td>1,2の場合</td>
+  </tr>
+</table>
 </div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer>
