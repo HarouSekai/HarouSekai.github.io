@@ -1,6 +1,47 @@
 <!doctypehtml><html lang=ja><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link rel=preload href=../assets/stylesheet.css as=style onload='this.onload=null;this.rel=stylesheet'><script src=../assets/script.js></script><link href=../assets/favicon.png rel=icon><header><div class=content><div id=title></div><div class=header-logo><a href=../index.html><span></span></a></div><div class=menu><a href="index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content>
 <!-- ここに記入 -->
 
+<div id="menu">
+  <label id="menu-btn">
+      <div></div>
+      <div></div>
+      <div></div>
+  </label>
+  <div id="menu-items">
+      <div id="close-btn">X</div>
+      <ul>
+          <li>
+            <a href="#data">Dateクラス</a>
+          </li>
+          <li>
+            <a href="#each_with_index">each_with_index</a>
+          </li>
+          <li>
+            <a href="#include?">include?</a>
+          </li>
+          <li>
+            <a href="#slice!">slice!</a>
+          </li>
+          <li>
+            <a href="#scan">scan</a>
+          </li>
+          <li>
+            <a href="#index">index</a>
+          </li>
+          <li>
+            <a href="#even?">even?</a>
+          </li>
+          <li>
+            <a href="#marume">丸めメソッド</a>
+          </li>
+          <li>
+            <a href="#downcase">downcase</a>
+          </li>
+      </ul>
+  </div>
+</div>
+
+<div id="data"></div>
 <pre>
   <code class="language-ruby">
 #Dateクラス
@@ -8,8 +49,12 @@ require "date"
 
 #今日の曜日
 Date.today.wday
-
-
+</code>
+</pre>
+<br>
+<div id="each_with_index"></div>
+<pre>
+  <code class="language-ruby">
 each_with_index
 #要素の繰り返し処理と同時に、その要素が何番目に処理されたか表す。
 
@@ -17,8 +62,12 @@ array = []
 array.each_with_index do |item, i|
   puts "#{i}番目の要素は#{item}です"
 end
-
-
+</code>
+</pre>
+<br>
+<div id="include?"></div>
+<pre>
+  <code class="language-ruby">
 includes? || include?
 #指定した値が配列や文字列内に含まれているかを判定する。
 
@@ -28,8 +77,12 @@ a.includes?("z")    #=> false
 
 "hello".includes? "lo"    #=> true
 "hello".includes? ?h      #=> true
-
-
+</code>
+</pre>
+<br>
+<div id="slice!"></div>
+<pre>
+  <code class="language-ruby">
 slice!
 #指定した範囲を文字列から取り除いたうえで取り除いた部分文字列を返す。
 
@@ -38,8 +91,12 @@ string.slice!(2)      #=> "i"
 string.slice!(3..6)   #=> " is "
 string.slice!(/s.*t/) #=> "sa st"
 string.slice!("r")    #=> "thing"
-
-
+</code>
+</pre>
+<br>
+<div id="scan"></div>
+<pre>
+  <code class="language-ruby">
 scan(pattern) -> [String] | [[String]]
 #selfに対してpatternを繰り返しマッチし、マッチした部分文字列の配列を返す。
 #patternが正規表現で括弧を含む場合は、括弧でくくられたパターンにマッチした部分文字列の配列を返す。
@@ -73,8 +130,12 @@ scan(pattern) {|s| ... } -> self
 # ["ba", "z"]
 # ["ba", "r"]
 # ["ba", "z"]
-
-
+</code>
+</pre>
+<br>
+<div id="index"></div>
+<pre>
+  <code class="language-ruby">
 index(pattern, pos = 0) -> Integer | nil
 #文字列のインデックスposから右に向かってpatternを検索し、最初に見つかった部分文字列の左端のインデックスを返す。見つからなければnilを返す。
 #引数patternは検索する部分文字列または正規表現で指定する。
@@ -86,15 +147,23 @@ p "character".index(?c)                 # => 0
 
 p "foobarfoobar".index("bar", 6)        # => 9
 p "foobarfoobar".index("bar", -6)       # => 9
-
-
+</code>
+</pre>
+<br>
+<div id="even?"></div>
+<pre>
+  <code class="language-ruby">
 even? -> bool
 #自身が偶数であれば心を返す。そうでない場合は偽を返す。
 
 10.even?    # => true
 5.even?     # => false
-
-
+</code>
+</pre>
+<br>
+<div id="marume"></div>
+<pre>
+  <code class="language-ruby">
 #丸めメソッド
 |       ceil      floor      round   truncate
 ----------------------------------------------
@@ -103,7 +172,12 @@ even? -> bool
  -1.1 |      -1      -2         -1         -1
  -1.9 |      -1      -2         -2         -1
 <!--  -->
-
+</code>
+</pre>
+<br>
+<div id="downcase"></div>
+<pre>
+  <code class="language-ruby">
 downcase(*options) -> String
 #すべての大文字を対応する小文字に置き換えた文字列を返す。
 
