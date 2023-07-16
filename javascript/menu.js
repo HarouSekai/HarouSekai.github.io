@@ -1,7 +1,15 @@
 const d = document;
 const h = d.querySelector('.main');
-const hs = d.querySelectorAll('h3');
-const ulHtml = `
+const h2 = d.querySelectorAll('h2');
+const h3 = d.querySelectorAll('h3');
+let hs = [];
+h2.forEach((h)=>{
+  hs.push(h);
+});
+h3.forEach((h)=>{
+  hs.push(h);
+});
+const menu = `
   <div id="menu">
   <label id="menu-btn">
       <div></div>
@@ -15,7 +23,7 @@ const ulHtml = `
   </div>
   </div>
   `;
-h.insertAdjacentHTML('beforeend',ulHtml);
+h.insertAdjacentHTML('beforeend',menu);
 const ul = d.getElementById('ul');
 const lis = hs.forEach((h)=>{
   const li = `<li><a href=#${h.id}>${h.innerHTML}</a></li>`;
