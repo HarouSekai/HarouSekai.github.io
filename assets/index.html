@@ -2,6 +2,7 @@
   const lists = [
       {h: "アルゴリズム問題", v: [
         {n: "algorism1", t: "数値を扱うアルゴリズム"},
+        {n: "point_input_output", t: "点数登録・出力プログラム<br>（ハッシュ）"},
       ]},
       {h: "Kotlin Ⅰ", v: [
         {n: "kotlin1", t: "記事アプリ"},
@@ -60,5 +61,5 @@
         {n: "SQL", t: "SQL"}
       ]}
   ];
-  const articles = lists.map((list) => { let html = `<h2>${list.h}</h2><div class=article_lists>${list.v.map((d) => { const dHtml = `<div><a href="../articles/${d.n}.html?tag=${d.t}">${d.t}</a></div>`; return dHtml; })}</div>`; html = html.replaceAll(',', ''); return html; }); const mainContent = document.getElementById("main-content"); mainContent.insertAdjacentHTML("afterbegin", articles);
+  const articles = lists.map((list) => { let html = `<h2>${list.h}</h2><div class=article_lists>${list.v.map((d) => { const dHtml = `<div><a href="../articles/${d.n}.html?tag=${d.t.replaceAll('<br>',' ')}">${d.t}</a></div>`; return dHtml; })}</div>`; html = html.replaceAll(',', ''); return html; }); const mainContent = document.getElementById("main-content"); mainContent.insertAdjacentHTML("afterbegin", articles);
   </script>
