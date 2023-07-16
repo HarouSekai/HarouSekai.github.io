@@ -1,0 +1,148 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../../assets/favicon.png rel=icon><link rel=preload href=../../assets/stylesheet.css as=style onload='this.onload=null;this.rel=stylesheet'><script src=../../assets/script.js></script></head><body><header><div class=content><div id=title></div><div class=header-logo><a href=../../index.html><span></span></a></div><div class=menu><a href="../../assets/index.html">HOME</a></div></div></header><div class=main><div class=content>
+
+<h3 id="data">Dateクラス</h3>
+<pre>
+  <code class="language-ruby">
+#Dateクラス
+require "date"
+
+#今日の曜日
+Date.today.wday
+</code>
+</pre>
+<br>
+<h3 id="each_with_index">each_with_index</h3>
+<pre>
+  <code class="language-ruby">
+each_with_index
+#要素の繰り返し処理と同時に、その要素が何番目に処理されたか表す。
+
+array = []
+array.each_with_index do |item, i|
+  puts "#{i}番目の要素は#{item}です"
+end
+</code>
+</pre>
+<br>
+<h3 id="include?">include?</h3>
+<pre>
+  <code class="language-ruby">
+includes? || include?
+#指定した値が配列や文字列内に含まれているかを判定する。
+
+a = ["a", "b", "c"]
+a.includes?("b")    #=> true
+a.includes?("z")    #=> false
+
+"hello".includes? "lo"    #=> true
+"hello".includes? ?h      #=> true
+</code>
+</pre>
+<br>
+<h3 id="slice!">slice!</h3>
+<pre>
+  <code class="language-ruby">
+slice!
+#指定した範囲を文字列から取り除いたうえで取り除いた部分文字列を返す。
+
+string = "this is a string"
+string.slice!(2)      #=> "i"
+string.slice!(3..6)   #=> " is "
+string.slice!(/s.*t/) #=> "sa st"
+string.slice!("r")    #=> "thing"
+</code>
+</pre>
+<br>
+<h3 id="scan">scan</h3>
+<pre>
+  <code class="language-ruby">
+scan(pattern) -> [String] | [[String]]
+#selfに対してpatternを繰り返しマッチし、マッチした部分文字列の配列を返す。
+#patternが正規表現で括弧を含む場合は、括弧でくくられたパターンにマッチした部分文字列の配列を返す。
+
+p "foobar".scan(/../)               # => ["fo", "ob", "ar"]
+p "foobar".scan("o")                # => ["o", "o"]
+p "foobarbazfoobarbaz".scan(/ba./)  # => ["bar", "baz", "bar", "baz"]
+
+p "foobar".scan(/(.)/) # => [["f"], ["o"], ["o"], ["b"], ["a"], ["r"]]
+
+p "foobarbazfoobarbaz".scan(/(ba)(.)/) # => [["ba", "r"], ["ba", "z"], ["ba", "r"], ["ba", "z"]]
+
+
+scan(pattern) {|s| ... } -> self
+#patternがマッチした部分文字列をブロックに渡して実行する。patternが正規表現で括弧を含む場合は、括弧でくくられたパターンにマッチした文字列の配列を返す。
+
+"foobarbazfoobarbaz".scan(/ba./) {|s| p s }
+# "bar"
+# "baz"
+# "bar"
+# "baz"
+
+"foobarbazfoobarbaz".scan("ba") {|s| p s }
+# "ba"
+# "ba"
+# "ba"
+# "ba"
+
+"foobarbazfoobarbaz".scan(/(ba)(.)/) {|s| p s }
+# ["ba", "r"]
+# ["ba", "z"]
+# ["ba", "r"]
+# ["ba", "z"]
+</code>
+</pre>
+<br>
+<h3 id="index">index</h3>
+<pre>
+  <code class="language-ruby">
+index(pattern, pos = 0) -> Integer | nil
+#文字列のインデックスposから右に向かってpatternを検索し、最初に見つかった部分文字列の左端のインデックスを返す。見つからなければnilを返す。
+#引数patternは検索する部分文字列または正規表現で指定する。
+#posが負の場合、文字列の末尾から数えた位置から探索する。
+
+p "astrochemistry".index("str")         # => 1
+p "regexpindex".index(/e.*x/, 2)        # => 3
+p "character".index(?c)                 # => 0
+
+p "foobarfoobar".index("bar", 6)        # => 9
+p "foobarfoobar".index("bar", -6)       # => 9
+</code>
+</pre>
+<br>
+<h3 id="even?">even?</h3>
+<pre>
+  <code class="language-ruby">
+even? -> bool
+#自身が偶数であれば心を返す。そうでない場合は偽を返す。
+
+10.even?    # => true
+5.even?     # => false
+</code>
+</pre>
+<br>
+<h3 id="marume">丸めメソッド</h3>
+<pre>
+  <code class="language-ruby">
+#丸めメソッド
+|       ceil      floor      round   truncate
+----------------------------------------------
+  1.9 |       2       1          2          1
+  1.1 |       2       1          1          1
+ -1.1 |      -1      -2         -1         -1
+ -1.9 |      -1      -2         -2         -1
+<!--  -->
+</code>
+</pre>
+<br>
+<h3 id="downcase">downcase</h3>
+<pre>
+  <code class="language-ruby">
+downcase(*options) -> String
+#すべての大文字を対応する小文字に置き換えた文字列を返す。
+
+p "STRing?".downcase   # => "string?"
+  </code>
+</pre>
+<br>
+
+</div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer>

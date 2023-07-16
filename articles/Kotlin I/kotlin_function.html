@@ -1,0 +1,129 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../../assets/favicon.png rel=icon><link rel=preload href=../../assets/stylesheet.css as=style onload='this.onload=null;this.rel=stylesheet'><script src=../../assets/script.js></script></head><body><header><div class=content><div id=title></div><div class=header-logo><a href=../../index.html><span></span></a></div><div class=menu><a href="../../assets/index.html">HOME</a></div></div></header><div class=main><div class=content>
+
+              <h3 id="func_into_var">関数を変数に格納する</h3>
+関数を変数に格納する
+<pre>
+  <code class="language-Kotlin">
+  fun main() {
+    val trickFunction = ::trick
+  }
+  
+  fun trick() {
+      println("No treats!")
+  }
+  </code>
+</pre><br>
+ラムダ式を使用した関数の定義
+<pre>
+  <code class="language-Kotlin">
+  fun main() {
+    val trickFunction = trick
+    trick()
+  }
+  
+  val trick = {
+      println("No treats!")
+  }
+  //-> No treat!
+  </code>
+</pre><br>
+<h3 id="use_as_data">関数をデータ型として使用する</h3>
+関数の型：<code class="hi">([input type]) -> [return type]</code>と表される。<br>
+関数の型を明示的に指定するラムダ：
+<pre>
+  <code class="language-Kotlin">
+  val treat: () -> Unit = {
+    println("Have a treat!")
+  }
+  </code>
+</pre><br>
+戻り値に関数を返す
+<pre>
+  <code class="language-Kotlin">
+fun [function name](): [function type] {
+  //code
+  return [Name of another function]
+}
+
+//**exam
+fun trickOrTreat(isTrick: Boolean): () -> Unit {
+  if (isTrick) {
+      return trick
+  } else {
+      return treat
+  }
+}
+  </code>
+</pre><br>
+関数を引数として別の関数に渡す
+<pre>
+  <code class="language-Kotlin">
+val [function name] = {[parameter1], [parameter2] -> 
+    [function body]
+}
+
+//*呼び出される関数
+fun trickOrTreat(isTrick: Boolean, extraTreat: (Int) -> String): () -> Unit {
+  if (isTrick) {
+      return trick
+  } else {
+      println(extraTreat(5))
+      return treat
+  }
+}
+
+//*呼び出す関数
+fun main() {
+  val coins: (Int) -> String = { quantity ->
+      "$quantity quarters"
+  }
+  val treatFunction = trickOrTreat(false)
+  val trickFunction = trickOrTreat(true)
+}
+  </code>
+</pre><br>
+null値許容型の関数型
+<pre>
+  <code class="language-Kotlin">
+(([parameters]) -> [return type])?
+  </code>
+</pre><br>
+ラムダ式でパラメータを省略する（it の使用）
+<pre>
+  <code class="language-Kotlin">
+  val coins: (Int) -> String = {
+    "$it quarters"
+  }
+  </code>
+</pre><br>
+<h3 id="easy_sync">簡単な構文でラムダを記述する</h3>
+関数にラムダ式を直接渡す
+<pre>
+  <code class="language-Kotlin">
+  val treatFunction = trickOrTreat(false, { "$it quarters" })
+  </code>
+</pre><br>
+後置ラムダ構文（よくある関数）
+<pre>
+  関数の最後のパラメータが関数である場合は、別の省略形でラムダを書くことができる。
+  <code class="language-Kotlin">
+funcName(param) {[Lambda expression]}
+
+val treatFunction = trickOrTreat(false) { "$it quarters" }
+  </code>
+</pre><br>
+<h3 id="repeat">repeat()関数を使用する</h3>
+repeat()関数：forループを簡潔に表現する
+<pre>
+  <code class="language-Kotlin">
+for ([iteration] in [start]..[end]) {
+  //code
+}
+
+repeat(times) {[iteration] ->
+    //code
+}
+  </code>
+</pre><br>
+
+</div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer>

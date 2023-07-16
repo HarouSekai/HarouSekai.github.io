@@ -1,0 +1,104 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../../assets/favicon.png rel=icon><link rel=preload href=../../assets/stylesheet.css as=style onload='this.onload=null;this.rel=stylesheet'><script src=../../assets/script.js></script></head><body><header><div class=content><div id=title></div><div class=header-logo><a href=../../index.html><span></span></a></div><div class=menu><a href="../../assets/index.html">HOME</a></div></div></header><div class=main><div class=content>
+
+<pre style="max-width: 15em;border: 1px solid #888;">
+  <span style="display: inline-block;margin: 0 auto;transform: translateX(2em);">
+    <span style="font-weight: 600;font-size: 1.1em;line-height: 2.4;">コレクション</span>
+    配列
+    リスト
+    セット
+    マップ
+  </span>
+</pre>
+<br>
+<h3>配列</h3>
+<pre>
+  <code class="language-Kotlin">
+#サイズは固定されている。順序固定。
+
+val rockPlanets = arrayOf&lt;String>("Mercury", "Venus", "Earth", "Mars")
+val gasPlanets = arrayOf("Jupiter", "Saturn", "Uranus", "Neptune")
+val solarSystem = rockPlanets + gasPlanets
+//新たな配列の生成
+println(solarSystem[0])
+solarSystem[3] = "Little Earth"
+  </code>
+</pre>
+<br>
+<h3>リスト</h3>
+<pre>
+  <code class="language-Kotlin">
+#サイズ変更可能。順序固定。
+
+val solarSystem = listOf("Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune")
+//読み取り専用
+println(solarSystem.size)
+//サイズの出力
+println(solarSystem[2])
+println(solarSystem.get(3))
+println(solarSystem.indexOf("Earth"))
+//インデックスを検索
+
+for (planet in solarSystem) {
+  println(planet)
+}
+//forループ（Rubyのeach, JavaScriptのforEachに相当）
+
+val solarSystem = mutableListOf("Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune")
+//追加・削除が可能
+solarSystem.add("Pluto")
+//末尾に追加
+solarSystem.add(3, "Theia")
+//インデックス3に追加
+solarSystem[3] = "Future Moon"
+solarSystem.removeAt(9)
+//要素の削除(1)
+solarSystem.remove("Future Moon")
+//要素の削除(2)
+println("Future Moon" in solarSystem)
+//true or false
+  </code>
+</pre>
+<br>
+<h3>セット</h3>
+<pre>
+  <code class="language-Kotlin">
+#特定の順序を持たない。重複値を許可しない。
+
+val solarSystem = mutableSetOf("Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune")
+//追加・削除が可能
+println(solarSystem.size)
+solarSystem.add("Pluto")
+println(solarSystem.contains("Pluto"))
+//true or false
+solarSystem.remove("Pluto")
+  </code>
+</pre>
+<br>
+<h3>マップ</h3>
+<pre>
+  <code class="language-Kotlin">
+#キーと値で構成される。
+
+mutableMapOf&lt;[key type], [value type]>()
+//初期値がある場合は型推論を使用できる。
+
+val solarSystem = mutableMapOf(
+    "Mercury" to 0,
+    "Venus" to 0,
+    "Earth" to 1,
+    "Mars" to 2,
+    "Jupiter" to 79,
+    "Saturn" to 82,
+    "Uranus" to 27,
+    "Neptune" to 14
+)
+println(solarSystem.size)
+solarSystem["Pluto"] = 5
+println(solarSystem.get("Theia"))
+//null
+solarSystem.remove("Pluto")
+solarSystem.put("Jupiter", 78)
+  </code>
+</pre>
+<br>
+  </div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer>
