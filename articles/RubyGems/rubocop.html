@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../../assets/favicon.png rel=icon><link rel=preload href=../../assets/stylesheet.css as=style onload='this.onload=null;this.rel=stylesheet'><script src=../../assets/script.js></script></head><body><header><div class=content><div id=title></div><div class=header-logo><a href=../../index.html><span></span></a></div><div class=menu><a href="../../assets/index.html">HOME</a></div></div></header><div class=main><div class=content>
+    <pre>
+    <code class=language-Ruby>
+
+Rubocopの導入
+
+Gemfile
+```
+group :development do
+gem 'rubocop', require: false
+end
+```
+bundle install
+touch .rubocop.yml
+
+Rubocopの設定
+.rubocop.ymlを編集
+
+Rubocopの実行
+bundle exec rubocop
+
+Rubocopの実行（チェック内容を自動修正）
+bundle exec rubocop -a
+
+    </code>
+</pre></div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer>

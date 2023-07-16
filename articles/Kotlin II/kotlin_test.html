@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../../assets/favicon.png rel=icon><link rel=preload href=../../assets/stylesheet.css as=style onload='this.onload=null;this.rel=stylesheet'><script src=../../assets/script.js></script></head><body><header><div class=content><div id=title></div><div class=header-logo><a href=../../index.html><span></span></a></div><div class=menu><a href="../../assets/index.html">HOME</a></div></div></header><div class=main><div class=content>
+
+<h3>テストについて</h3>
+<table>
+  <tr>
+    <td>ローカルテスト</td><td>機能をテストする</td><td>src > test > java > com.example.アプリ名</td>
+  </tr>
+  <tr>
+    <td>インストルメーションテスト</td><td>UIをテストする</td><td>src > androidTest > java > com.example.アプリ名</td>
+  </tr>
+</table>
+<style>
+  td{padding: 0.5em;border: 1px solid #888;}
+</style>
+<br>
+ローカルテスト（TipCalculatorTests.kt）
+<pre>
+<code class="language-Kotlin">
+  package com.example.tiptime
+  import org.junit.Assert.assertEquals
+  import org.junit.Test
+  import java.text.NumberFormat
+  
+  class TipCalculatorTests {
+  
+      @Test
+      fun calculate_20_percent_tip_no_roundup() {
+          val amount = 10.00
+          val tipPercent = 20.00
+          val expectedTip = NumberFormat.getCurrencyInstance().format(2)
+          val actualTip = calculateTip(amount = amount, tipPercent = tipPercent, false)
+          assertEquals(expectedTip, actualTip)
+      }
+  }
+</code>
+</pre><br>
+インストルメーションテスト（TipUITests.kt）
+<pre>
+<code class="language-Kotlin">
+  package com.example.tiptime
+
+  import androidx.compose.foundation.layout.fillMaxSize
+  import androidx.compose.material3.Surface
+  import androidx.compose.ui.Modifier
+  import androidx.compose.ui.test.junit4.createComposeRule
+  import androidx.compose.ui.test.onNodeWithText
+  import androidx.compose.ui.test.performTextInput
+  import com.example.tiptime.ui.theme.TipTimeTheme
+  import org.junit.Rule
+  import org.junit.Test
+  import java.text.NumberFormat
+  
+  class TipUITests {
+  
+      @get:Rule
+      val composeTestRule = createComposeRule()
+  
+      @Test
+      fun calculate_20_percent_tip() {
+          composeTestRule.setContent {
+              TipTimeTheme {
+                  Surface (modifier = Modifier.fillMaxSize()){
+                      TipTimeLayout()
+                  }
+              }
+          }
+          composeTestRule.onNodeWithText("Bill Amount")
+              .performTextInput("10")
+          composeTestRule.onNodeWithText("Tip (%)").performTextInput("20")
+          val expectedTip = NumberFormat.getCurrencyInstance().format(2)
+          composeTestRule.onNodeWithText("Tip Amount: $expectedTip").assertExists(
+              "No node with this text was found."
+          )
+      }
+  }
+</code>
+</pre><br>
+</div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer>

@@ -1,0 +1,538 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../../assets/favicon.png rel=icon><link rel=preload href=../../assets/stylesheet.css as=style onload='this.onload=null;this.rel=stylesheet'><script src=../../assets/script.js></script></head><body><header><div class=content><div id=title></div><div class=header-logo><a href=../../index.html><span></span></a></div><div class=menu><a href="../../assets/index.html">HOME</a></div></div></header><div class=main><div class=content>
+
+<h3 id="d">ディレクトリ構成</h3>
+<pre>
+  app
+    |_java
+    |   |_com.example.woof
+    |       |_data
+    |       |   |_Dog.kt
+    |       |_ui.theme
+    |       |   |_Color.kt
+    |       |   |_Shape.kt
+    |       |   |_Theme.kt
+    |       |   |_Type.kt
+    |       |_MainActivity.kt
+    |_res
+        |_drawable
+        |_font
+        |_mipmap
+        |_values
+  Gradle Scripts
+    |_build.gradle
+</pre>
+<pre>
+    フォントファイルの追加
+
+    フォルダ名を小文字・_オンリーにする。
+    Directory name: font
+    Resource type: font
+    「Android Resource Directory」に Available qualifiers 「Country Code」で追加
+</pre>
+<h3 id="ma">MainActivity.kt</h3>
+<pre>
+  <code class="language-kotlin">
+package com.example.woof
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.woof.data.Dog
+import com.example.woof.data.dogs
+import com.example.woof.ui.theme.WoofTheme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            WoofTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    WoofApp()
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Composable that displays an app bar and a list of dogs.
+ */
+@Composable
+fun WoofApp() {
+    Scaffold(
+        topBar = {
+            WoofTopAppBar()
+        }
+    ) { it ->
+        LazyColumn(
+            contentPadding = it,
+            modifier = Modifier.background(MaterialTheme.colorScheme.background)
+        ) {
+            items(dogs) {
+                DogItem(
+                    dog = it,
+                    modifier = Modifier.padding(dimensionResource(R.dimen.padding_small))
+                )
+            }
+        }
+    }
+}
+
+/**
+ * Composable that displays a list item containing a dog icon and their information.
+ *
+ * @param dog contains the data that populates the list item
+ * @param modifier modifiers to set to this composable
+ */
+@Composable
+fun DogItem(
+    dog: Dog,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val color by animateColorAsState(
+        targetValue = if (expanded) {
+            MaterialTheme.colorScheme.onSecondary
+        } else {
+            MaterialTheme.colorScheme.surface
+        }
+    )
+    Surface(
+        modifier = modifier,
+        shadowElevation = 4.dp,
+        shape = MaterialTheme.shapes.medium
+    ) {
+        Column(
+            modifier = Modifier
+                .background(color = color)
+                .animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        stiffness = Spring.StiffnessMedium
+                    )
+                )
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(dimensionResource(R.dimen.padding_small))
+            ) {
+                DogIcon(dog.imageResourceId)
+                DogInformation(dog.name, dog.age)
+                Spacer(Modifier.weight(1f))
+                DogItemButton(
+                    expanded = expanded,
+                    onClick = { expanded = !expanded },
+                )
+            }
+            if (expanded) {
+                DogHobby(dog.hobbies)
+            }
+        }
+    }
+}
+
+@Composable
+private fun DogItemButton(
+    expanded: Boolean,
+    onClick: () -> Unit,
+) {
+    IconButton(onClick = onClick) {
+        Icon(
+            imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+            tint = MaterialTheme.colorScheme.secondary,
+            contentDescription = stringResource(R.string.expand_button_content_description)
+        )
+    }
+}
+
+/**
+ * Composable that displays a button that is clickable and displays an expand more or an expand less
+ * icon.
+ *
+ * @param expanded represents whether the expand more or expand less icon is visible
+ * @param onClick is the action that happens when the button is clicked
+ * @param modifier modifiers to set to this composable
+ */
+
+/**
+ * Composable that displays a Top Bar with an icon and text.
+ *
+ * @param modifier modifiers to set to this composable
+ */
+
+@Composable
+fun WoofTopAppBar(modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(color = MaterialTheme.colorScheme.primary),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painter = painterResource(R.drawable.ic_woof_logo),
+            contentDescription = null,
+            modifier = Modifier
+                .size(64.dp)
+                .padding(8.dp)
+        )
+        Text(
+            text = stringResource(R.string.app_name),
+            style = MaterialTheme.typography.displayLarge
+        )
+    }
+}
+
+/**
+ * Composable that displays a photo of a dog.
+ *
+ * @param dogIcon is the resource ID for the image of the dog
+ * @param modifier modifiers to set to this composable
+ */
+@Composable
+fun DogIcon(
+    @DrawableRes dogIcon: Int,
+    modifier: Modifier = Modifier
+) {
+    Image(
+        modifier = modifier
+            .size(dimensionResource(R.dimen.image_size))
+            .padding(dimensionResource(R.dimen.padding_small))
+            .clip(MaterialTheme.shapes.small),
+        contentScale = ContentScale.Crop,
+        painter = painterResource(dogIcon),
+
+        // Content Description is not needed here - image is decorative, and setting a null content
+        // description allows accessibility services to skip this element during navigation.
+
+        contentDescription = null
+    )
+}
+
+/**
+ * Composable that displays a dog's name and age.
+ *
+ * @param dogName is the resource ID for the string of the dog's name
+ * @param dogAge is the Int that represents the dog's age
+ * @param modifier modifiers to set to this composable
+ */
+@Composable
+fun DogInformation(
+    @StringRes dogName: Int,
+    dogAge: Int,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = stringResource(dogName),
+            style = MaterialTheme.typography.displayMedium,
+            modifier = Modifier.padding(top = dimensionResource(R.dimen.padding_small))
+        )
+        Text(
+            text = stringResource(R.string.years_old, dogAge),
+            style = MaterialTheme.typography.bodyLarge
+        )
+    }
+}
+
+/**
+ * Composable that displays a dog's hobbies.
+ *
+ * @param dogHobby is the resource ID for the text string of the hobby to display
+ * @param modifier modifiers to set to this composable
+ */
+@Composable
+fun DogHobby(
+    @StringRes dogHobby: Int,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.padding(
+            start = 16.dp,
+            top = 8.dp,
+            bottom = 16.dp,
+            end = 16.dp
+        )
+    ) {
+        Text(
+            text = stringResource(R.string.about),
+            style = MaterialTheme.typography.labelLarge
+        )
+        Text(
+            text = stringResource(dogHobby),
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
+}
+
+/**
+ * Composable that displays what the UI of the app looks like in light theme in the design tab.
+ */
+@Preview
+@Composable
+fun WoofPreview() {
+    WoofTheme(darkTheme = false) {
+        WoofApp()
+    }
+}
+
+/**
+ * Composable that displays what the UI of the app looks like in dark theme in the design tab.
+ */
+@Preview
+@Composable
+fun WoofDarkThemePreview() {
+    WoofTheme(darkTheme = true) {
+        WoofApp()
+    }
+}
+  </code>
+</pre>
+<br>
+<h3 id="do">Dog.kt</h3>
+<pre>
+  <code class="language-kotlin">
+package com.example.woof.data
+
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import com.example.woof.R
+
+/**
+ * A data class to represent the information presented in the dog card
+ */
+data class Dog(
+    @DrawableRes val imageResourceId: Int,
+    @StringRes val name: Int,
+    val age: Int,
+    @StringRes val hobbies: Int
+)
+
+val dogs = listOf(
+    Dog(R.drawable.koda, R.string.dog_name_1, 2, R.string.dog_description_1),
+    Dog(R.drawable.lola, R.string.dog_name_2, 16, R.string.dog_description_2),
+    Dog(R.drawable.frankie, R.string.dog_name_3, 2, R.string.dog_description_3),
+    Dog(R.drawable.nox, R.string.dog_name_4, 8, R.string.dog_description_4),
+    Dog(R.drawable.faye, R.string.dog_name_5, 8, R.string.dog_description_5),
+    Dog(R.drawable.bella, R.string.dog_name_6, 14, R.string.dog_description_6),
+    Dog(R.drawable.moana, R.string.dog_name_7, 2, R.string.dog_description_7),
+    Dog(R.drawable.tzeitel, R.string.dog_name_8, 7, R.string.dog_description_8),
+    Dog(R.drawable.leroy, R.string.dog_name_9, 4, R.string.dog_description_9)
+)
+
+  </code>
+</pre>
+<br>
+<h3 id="co">Color.kt</h3>
+<pre>
+  <code class="language-kotlin">
+package com.example.woof.ui.theme
+
+import androidx.compose.ui.graphics.Color
+
+//Light Theme
+val Grey50 = Color(0xFFF8F9FA)
+val Grey900 = Color(0xFF202124)
+val Grey700 = Color(0xFF5F6368)
+val Green25 = Color(0xFFF2F9F4)
+val Green50 = Color(0xFFE6F4EA)
+val Green100 = Color(0xFFCEEAD6)
+
+//Dark Theme
+val White = Color(0xFFFFFFFF)
+val Grey100 = Color(0xFFF1F3F4)
+val Cyan900 = Color(0xFF007B83)
+val Cyan700 = Color(0xFF129EAF)
+val Cyan500 = Color(0xFF24C1DD)
+  </code>
+</pre>
+<br>
+<h3 id="sh">Shape.kt</h3>
+<pre>
+  <code class="language-kotlin">
+package com.example.woof.ui.theme
+
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Shapes
+import androidx.compose.ui.unit.dp
+
+val Shapes = Shapes(
+    small = RoundedCornerShape(50.dp),
+    medium = RoundedCornerShape(16.dp)
+    //medium = RoundedCornerShape(bottomStart = 16.dp, topEnd = 16.dp)
+)
+  </code>
+</pre>
+<br>
+<h3 id="th">Theme.kt</h3>
+<pre>
+  <code class="language-kotlin">
+package com.example.woof.ui.theme
+
+import android.app.Activity
+import android.os.Build
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
+
+private val LightColorPalette = lightColorScheme(
+    background = Green100,
+    surface = Green50,
+    onSecondary = Green25,
+    onSurface = Grey900,
+    primary = Grey50,
+    onPrimary = Grey900,
+    secondary = Grey700
+)
+
+private val DarkColorPalette = darkColorScheme(
+    background = Cyan900,
+    surface = Cyan700,
+    onSecondary = Cyan500,
+    onSurface = White,
+    primary = Grey900,
+    onPrimary = White,
+    secondary = Grey100
+)
+
+@Composable
+fun WoofTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+    val colors = if (darkTheme) {
+        DarkColorPalette
+    } else {
+        LightColorPalette
+    }
+
+    MaterialTheme(
+        colorScheme = colors,
+        typography = Typography,
+        shapes = Shapes,
+        content = content
+    )
+}
+  </code>
+</pre>
+<br>
+<h3 id="ty">Type.kt</h3>
+<pre>
+  <code class="language-kotlin">
+package com.example.woof.ui.theme
+
+import androidx.compose.material3.Typography
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import com.example.woof.R
+
+val AbrilFatface = FontFamily(
+    Font(R.font.abril_fatface_regular)
+)
+
+val Montserrat = FontFamily(
+    Font(R.font.montserrat_regular),
+    Font(R.font.montserrat_bold, FontWeight.Bold)
+)
+
+val Typography = Typography(
+    displayLarge = TextStyle(
+        fontFamily = AbrilFatface,
+        fontWeight = FontWeight.Normal,
+        fontSize = 30.sp
+    ),
+    displayMedium = TextStyle(
+        fontFamily = Montserrat,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp
+    ),
+    displaySmall = TextStyle(
+        fontFamily = Montserrat,
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp
+    ),
+    bodyLarge = TextStyle(
+        fontFamily = Montserrat,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    )
+)
+  </code>
+</pre>
+<br>
+<h3 id="bu">build.gradle(Module :app)</h3>
+<pre>
+  <code class="language-gradle">
+dependencies {
+
+    implementation platform('androidx.compose:compose-bom:2023.01.00')
+    implementation 'androidx.activity:activity-compose:1.7.0'
+    implementation "androidx.compose.material:material-icons-extended"
+    implementation 'androidx.compose.material3:material3'
+    implementation 'androidx.compose.ui:ui'
+    implementation 'androidx.compose.ui:ui-graphics'
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
+
+    debugImplementation 'androidx.compose.ui:ui-test-manifest'
+    debugImplementation 'androidx.compose.ui:ui-tooling'
+}
+  </code>
+</pre>
+<br>
+
+</div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer>

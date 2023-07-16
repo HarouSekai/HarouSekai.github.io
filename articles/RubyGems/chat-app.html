@@ -1,0 +1,271 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../../assets/favicon.png rel=icon><link rel=preload href=../../assets/stylesheet.css as=style onload='this.onload=null;this.rel=stylesheet'><script src=../../assets/script.js></script></head><body><header><div class=content><div id=title></div><div class=header-logo><a href=../../index.html><span></span></a></div><div class=menu><a href="../../assets/index.html">HOME</a></div></div></header><div class=main><div class=content>
+  <pre>
+  <code class=language-Ruby>
+
+テキスト・画像投稿機能まとめ
+
+中間テーブル
+
+throughオプション
+
+【例】app/models/photo.rb
+class Photo &lt; ApplicationRecord
+has_many :photo_tags
+has_many :tags, through: :photo_tags
+end
+
+【例】app/models/tag.rb
+class Tag &lt; ApplicationRecord
+has_many :photo_tags
+has_many :photos, through: :photo_tags
+end
+
+【例】app/models/photo_tag.rb
+class PhotoTag &lt; ApplicationRecord
+belongs_to :photo
+belongs_to :tag
+end
+
+______________________________
+ER図
+VSCodeの拡張機能「Draw.io Integration」
+
+
+Readmeにテーブルの情報を記述
+# テーブル設計
+
+## users テーブル
+
+| Column             | Type   | Options     |
+| ------------------ | ------ | ----------- |
+| name               | string | null: false |
+| email              | string | null: false |
+| encrypted_password | string | null: false |
+
+### Association
+
+- has_many :room_users
+- has_many :rooms, through: :room_users
+- has_many :messages
+
+## rooms テーブル
+
+| Column | Type   | Options     |
+| ------ | ------ | ----------- |
+| name   | string | null: false |
+
+### Association
+
+- has_many :room_users
+- has_many :users, through: :room_users
+- has_many :messages
+
+## room_users テーブル
+
+| Column | Type       | Options                        |
+| ------ | ---------- | ------------------------------ |
+| user   | references | null: false, foreign_key: true |
+| room   | references | null: false, foreign_key: true |
+
+### Association
+
+- belongs_to :room
+- belongs_to :user
+
+## messages テーブル
+
+| Column  | Type       | Options                        |
+| ------- | ---------- | ------------------------------ |
+| content | string     |                                |
+| user    | references | null: false, foreign_key: true |
+| room    | references | null: false, foreign_key: true |
+
+### Association
+
+- belongs_to :room
+- belongs_to :user
+_____________________________
+
+authenticate_user!オウセンティケイト ユーザーメソッド
+ログイン状態によって表示するページを切り替えるdeviseのメソッド。
+
+class ApplicationController &lt; ActionController::Base
+before_action :authenticate_user!
+end
+
+
+
+references型
+Railsで外部キーのカラムを追加する際に、用いる型。
+t.references :カラム名
+
+オプションから自分以外のユーザーを選択し、自分とともにidをパラメーターに送る
+
+&lt;select name="room[user_ids][]">
+&lt;option value="">チャットするユーザーを選択してください&lt;/option>
+&lt;% User.where.not(id: current_user.id).each do |user| %>
+&lt;option value=&lt;%=user.id%>>&lt;%= user.name %>&lt;/option>
+&lt;% end %>
+&lt;/select>
+&lt;input name="room[user_ids][]" type="hidden" value=&lt;%= current_user.id %>>
+
+
+collectionコレクションオプション
+collectionオプションは、指定したインスタンス変数の中にある要素の数だけ、部分テンプレートを繰り返し呼び出すことができるオプション。
+&lt;%= render partial: 'message', collection: @messages %>
+部分テンプレート内では、@messagesから取り出された一つ一つの要素を、部分テンプレートと同じ名前のmessageとして扱える。
+
+
+pplication.rbファイル
+configディレクトリに用意されている、Railsアプリケーションの設定ファイルです。
+application.rbファイルには、そのRailsアプリケーションの開発環境すべてにおいて共通となる設定を記述します。
+
+module ChatApp
+class Application &lt; Rails::Application
+# Initialize configuration defaults for originally generated Rails version.
+config.load_defaults 6.0 
+config.i18n.default_locale = :ja
+config.time_zone = 'Tokyo'
+# 中略
+
+lメソッド
+日付や時刻を表示する。
+&lt;%= l message.created_at %>
+
+
+dependentディペンデントオプション
+dependentオプションは親モデルを削除した時に、親モデルと関連している子モデルに対する挙動を指定するオプションです。
+
+class Tweet &lt; ApplicationRecord
+has_many :comments, dependent: :destroy
+end
+
+
+
+画像アップロード機能
+Active Strage	Railsに統合された。ファイルアップロードを簡単にする。
+
+ImageMagick
+コマンドラインから画像に処理を加える。ソフトウエア。
+
+MiniMagick
+Gem。
+
+ImageProcessing
+画像サイズを調整する。
+
+brew install imagemagick
+gem 'mini_magick'
+gem 'image_processing', '~> 1.2'
+bundle install
+
+rails active_storage:install
+
+has_one_attachedメソッド
+カkレコードとファイルを1対1の関係で紐づける。
+
+class モデル &lt; ApplicationRecord
+has_one_attached :ファイル名
+end
+
+class Message &lt; ApplicationRecord
+belongs_to :room
+belongs_to :user
+has_one_attached :image
+
+validates :content, presence: true
+end
+
+image_tagメソッド
+img要素を生成。
+
+attached?メソッド
+レコードにファイルが添付されているか調べる
+
+variantメソッド
+ファイルの表示サイズを指定
+
+&lt;%= image_tag message.image.variant(resize: '500x500'), class: 'message-image' if message.image.attached? %>
+
+エラーメッセージを英語に設定
+（rails_helper.rb）
+I18n.locale = "en"
+# RSpec.configure do |config|　〜　end　の外に記載しましょう。
+
+
+afterメソッド
+任意の処理の後に指定の処理を実行。
+（メッセージモデルのファクトリー）
+FactoryBot.define do
+factory :message do
+content {Faker::Lorem.sentence}
+association :user
+association :room
+
+after(:build) do |message|
+message.image.attach(io: File.open('public/images/test_image.png'), filename: 'test_image.png')
+end
+end
+end
+
+
+Rails.root.join
+アプリケーションのトップ階層のディレクトリまでの絶対パスを取得する。
+Rails.root.join('public/images/test_image.png')
+
+attach_fileメソッド
+テスト用の画像を添付できる。
+第1引数→input要素のname属性値
+第2引数→アップロードする画像のパス
+第3引数→オプション
+attach_file('message[image]', image_path, make_visible: true)
+
+↑今回の第3引数はhiddenされたinput属性に指定
+
+create_list
+FactoryBotのレコードを複数作成
+FactoryBot.create_list(:hoge, 3, title: 'Hello world', user_id: @user.id)
+
+
+_______________________________
+画像処理含むモデル単体テストコード例
+
+require 'rails_helper'
+
+RSpec.describe Post, type: :model do
+before do
+@post = FactoryBot.build(:post)
+end
+
+describe '新規投稿' do
+context '投稿できる場合' do
+it 'titleとcontentとimageが存在していれば保存できる' do
+expect(@post).to be_valid
+end
+end
+context '投稿できない場合' do
+it 'titleが空では保存できない' do
+@post.title = ''
+@post.valid?
+expect(@post.errors.full_messages).to include("Title can't be blank")
+end
+it 'contentが空では保存できない' do
+@post.content = ''
+@post.valid?
+expect(@post.errors.full_messages).to include("Content can't be blank")
+end
+it 'imageが空では保存できない' do
+@post.image = nil
+@post.valid?
+expect(@post.errors.full_messages).to include("Image can't be blank")
+end
+it '紐づくユーザーが存在しないと保存できない' do
+@post.user = nil
+@post.valid?
+expect(@post.errors.full_messages).to include('User must exist')
+end
+end
+end
+end
+  </code>
+</pre></div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer>

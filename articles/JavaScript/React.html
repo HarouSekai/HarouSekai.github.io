@@ -1,0 +1,288 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../../assets/favicon.png rel=icon><link rel=preload href=../../assets/stylesheet.css as=style onload='this.onload=null;this.rel=stylesheet'><script src=../../assets/script.js></script></head><body><header><div class=content><div id=title></div><div class=header-logo><a href=../../index.html><span></span></a></div><div class=menu><a href="../../assets/index.html">HOME</a></div></div></header><div class=main><div class=content>
+
+    <div id=menu><label id=menu-btn><div></div><div></div><div></div></label><div id=menu-items><div id=close-btn>X</div><ul><li><a href=#index>index.html/index.js</a><li><a href=#app>App.js</a><li><a href=#header>Header.js</a><li><a href=#main>Main.js</a><li><a href=#lesson>Lesson.js</a><li><a href=#contact>ContactForm.js</a></ul></div></div>index.html<pre id=index>
+    <code class=language-Markup>
+&lt;!DOCTYPE html>
+&lt;html>
+    &lt;head>
+    &lt;link rel="stylesheet" href="stylesheet.css">
+    &lt;title>React App&lt;/title>
+    &lt;/head>
+    &lt;body>
+    &lt;div id="root">&lt;/div>
+    &lt;script src="bundle.js">&lt;/script>
+    &lt;/body>
+&lt;/html>
+
+    </code>
+</pre><br>index.js<pre>
+<code class=language-JavaScript>
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './components/App';
+
+ReactDOM.render(&lt;App />, document.getElementById('root'));
+    
+</code>
+</pre><br>App.js<pre id=app>
+    <code class=language-jsx>
+import React from 'react';
+import Header from './Header';
+import Main from './Main';
+import Footer from './Footer';
+
+class App extends React.Component {
+    render() {
+    return (
+        &lt;div>
+        &lt;Header />
+        &lt;Main />
+        &lt;Footer />
+        &lt;/div>
+    );
+    }
+}
+
+export default App;
+        
+    </code>
+</pre><br>Header.js<pre id=header>
+    <code class=language-jsx>
+import React from 'react';
+
+class Header extends React.Component {
+    render() {
+    return (
+        &lt;div className='header'>
+        &lt;div className='header-logo'>
+           React App
+        &lt;/div>
+        &lt;/div>
+    );
+    }
+}
+
+export default Header;
+        
+    </code>
+</pre><br>Main.js<pre id=main>
+    <code class=language-jsx>
+import React from 'react';
+import Lesson from './Lesson';
+import ContactForm from './ContactForm';
+
+class Main extends React.Component {
+    render() {
+    const lessonList = [
+        {
+        name: 'HTML & CSS',
+        image: 'HTML_&_CSS_img',
+        introduction: 'WEBページの見た目を作る。',
+        },
+        {
+        name: 'Sass',
+        image: 'Sass_img',
+        introduction: 'CSSをより便利に効率的にする。',
+        },
+        {
+        name: 'JavaScript',
+        image: 'JavaScript_img',
+        introduction: 'フロントエンド・サーバーサイドにまたがり活躍する。',
+        },
+        {
+        name: 'React',
+        image: 'React_img',
+        introduction: 'HTMLのようにサイトの見た目をつくることができるJavaScriptのライブラリ。',
+        },
+    ];
+
+    return (
+        &lt;div className='main-wrapper'>
+        &lt;div className='main'>
+            &lt;div className='copy-container'>
+            &lt;h1>Hello, World.&lt;/h1>
+            &lt;h2>プログラミング&lt;/h2>
+            &lt;/div>
+            &lt;div className='lesson-container'>
+            &lt;h3>学べるレッスン&lt;/h3>
+            { lessonList.map((lessonItem) => {
+                return (
+                &lt;Lesson
+                    name={ lessonItem.name }
+                    image={ lessonItem.image }
+                    introduction={ lessonItem.introduction }
+                />
+                );
+            }) }
+            &lt;/div>
+            &lt;div className='contact-container'>
+            &lt;h3>お問い合わせ&lt;/h3>
+            &lt;ContactForm />
+            &lt;/div>
+        &lt;/div>
+        &lt;/div>
+    );
+    }
+}
+
+export default Main;
+        
+    </code>
+</pre><br>Lesson.js<pre id=lesson>
+    <code class=language-jsx>
+import React from 'react';
+
+class Lesson extends React.Component {
+    constructor(props) {
+    super(props);
+    this.state = {isModalOpen: false};
+    }
+
+    handleClickLesson() {
+    this.setState({isModalOpen: true});
+    }
+
+    handleClickClose() {
+    this.setState({isModalOpen: false});
+    }
+
+    render() {
+    let modal;
+    if (this.state.isModalOpen) {
+        modal = (
+        &lt;div className='modal'>
+            &lt;div className='modal-inner'>
+            &lt;div className='modal-header'>&lt;/div>
+            &lt;div className='modal-introduction'>
+                &lt;h2>{this.props.name}&lt;/h2>
+                &lt;p>{this.props.introduction}&lt;/p>
+            &lt;/div>
+            &lt;button
+                className='modal-close-btn'
+                onClick={() => this.handleClickClose()}
+            >
+                とじる
+            &lt;/button>
+            &lt;/div>
+        &lt;/div>
+        );
+    }
+
+    return (
+        &lt;div className='lesson-card'>
+        &lt;div
+            className='lesson-item'
+            onClick={() => {this.handleClickLesson()}}
+        >
+            &lt;p>{this.props.name}&lt;/p>
+            &lt;img src={this.props.image} />
+        &lt;/div>
+        {modal}
+        &lt;/div>
+    );
+    }
+}
+
+export default Lesson;        
+    </code>
+</pre><br>ContactForm.js<pre id=contact>
+    <code class=language-jsx>
+import React from 'react';
+
+class ContactForm extends React.Component {
+    constructor(props) {
+    super(props);
+    this.state = {
+        isSubmitted: false,
+        email: '',
+        hasEmailError: false,
+        content: '',
+        hasContentError: false
+    };
+    }
+
+    handleEmailChange(event) {
+    const inputValue = event.target.value;
+    const isEmpty = inputValue === '';
+    this.setState({
+        email: inputValue,
+        hasEmailError: isEmpty,
+    });
+    }
+
+    handleContentChange(event){
+    const inputValue = event.target.value;
+    const isEmpty = inputValue === '';
+    this.setState({
+        content: inputValue,
+        hasContentError: isEmpty,
+    });
+    }
+
+    handleSubmit() {
+    this.setState({isSubmitted: true});
+    }
+
+    render() {
+    let emailErrorText;
+    if (this.state.hasEmailError) {
+        emailErrorText = (
+        &lt;p className='contact-message-error'>
+            メールアドレスを入力してください
+        &lt;/p>
+        );
+    }
+    
+    let contentErrorText;
+    
+    if (this.state.hasContentError) {
+        contentErrorText = (
+        &lt;p className='contact-message-error'>
+            お問い合わせ内容を入力してください
+        &lt;/p>  
+        );
+    }
+    
+    let contactForm;
+    if (this.state.isSubmitted) {
+        contactForm = (
+        &lt;div className='contact-submit-message'>
+            送信完了
+        &lt;/div>
+        );
+    } else {
+        contactForm = (
+        &lt;form onSubmit={() => {this.handleSubmit()}} >
+            &lt;p>メールアドレス（必須）&lt;/p>
+            &lt;input
+            value={this.state.email}
+            onChange={(event) => {this.handleEmailChange(event)}}
+            />
+            {emailErrorText}
+            &lt;p>お問い合わせ内容（必須）&lt;/p>
+            &lt;textarea
+            value={this.state.content}
+            onChange={(event) => {this.handleContentChange(event)}}
+            />
+            {contentErrorText}
+            
+            &lt;input
+            type='submit'
+            value='送信'
+            />
+        &lt;/form>
+        );
+    }
+    
+    return (
+        &lt;div className='contact-form'>
+        {contactForm}
+        &lt;/div>
+    );
+    }
+}
+
+export default ContactForm;
+        
+    </code>
+</pre></div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer>
