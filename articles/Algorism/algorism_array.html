@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../../assets/favicon.png rel=icon><link rel=preload href=../../assets/stylesheet.css as=style onload='this.onload=null;this.rel=stylesheet'><script src=../../assets/script.js></script></head><header><div class=content><div id=title></div><div class=header-logo><a href=../../index.html><span></span></a></div><div class=menu><a href="../../assets/index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content>
+<style>li{list-style:initial}</style>
+
+<h3 id="mn_into_tt">mxn 自然数入力 => 3x3 平均出力</h3>
+<ul>
+  <span class="bold">条件</span>
+  <li>入力する数値は空白で区切ること。</li>
+  <li>出力は数値と空白の組み合わせとすること。</li>
+  <li>空白が過不足なく出力されること。</li>
+</ul>
+<pre>
+  <code class="language-ruby">
+    input = gets
+    hw = input.split(" ")
+    h = hw[0].to_i
+    w = hw[1].to_i
+    nums = []
+    ht = h / 3
+    wt = w / 3
+    hi = 0
+    while hi &lt; h
+      wi = 0
+      while wi &lt; w
+        ss = gets.split(" ")
+        c = 0
+        k = []
+        ss.each do |s|
+          if c == 0
+            k = []
+          end
+          k &lt;&lt; s.to_i
+          c += 1
+          wi += 1
+          if c == 3
+            nums &lt;&lt; k
+            c = 0
+          end
+        end
+      end
+      hi += 1
+    end
+    
+    ave_n = 0
+    hp = 0
+    while hp &lt; ht
+      wp = 0
+      while wp &lt; wt
+        ave_n += 1
+        wp += 1
+      end
+      hp += 1
+    end
+    aves = []
+    ave_n.times do
+      d = []
+      aves &lt;&lt; d
+    end
+    
+    aves_i = 0
+    r = 0
+    nums.each do |num|
+      num.each do |n|
+        aves[aves_i] &lt;&lt; n
+      end
+      aves_i += 1
+    
+      if aves_i % wt == 0
+        aves_i -= wt
+        r += 1
+      end
+      if r == 3
+        aves_i += wt 
+        r = 0
+      end
+    end
+    
+    s = 0
+    q = ""
+    aves.each do |ave|
+      e = 0
+      ave.each do |a|
+        e += a
+      end
+      e = e / 9
+      print e
+      s += 1
+      if s == wt
+        puts ""
+        s = 0
+        q = ""
+      else
+        print " "
+      end
+    end
+  </code>
+</pre>
+<br>
+
+<h3 id="n_cropping">n毛作</h3>
+<ul>
+  <span class="bold">条件</span>
+  <li>入力はn + 2行</li>
+  <li>入力1行目は"n m"(n: 作業回数, m: 作物種類数)</li>
+  <li>入力2行目は"h w"(h: 畑の縦の区画数, w: 畑の横の区画数)</li>
+  <li>入力3～n + 2行目は"h0 h1 w0 w1 mj"(h0: h始点, h1: h終点, w0: w始点, w1: w終点, mj: 作物種類番号)</li>
+  <li>第i期は、区画h0 h1 w0 w1 の範囲の作物を収穫し、作物mjを植える</li>
+  <li>出力はm + h行</li>
+  <li>出力i行目(1≦i≦m)は作物miの収穫数</li>
+  <li>出力i行目(1≦i≦m + h)は最終的な畑全体の状態(X)</li>
+  <li>Xは"m_0 m_1 ... m_w"の形式で表され、各区画に植えられた作物種類番号を表示する</li>
+  <li>作物が植えられていない場合は"."を表示する</li>
+</ul>
+<pre>
+  <code class="language-ruby">
+    nm = gets.split(" ")
+    work_n = nm[0].to_i
+    spec_n = nm[1].to_i
+    
+    hw = gets.split(" ")
+    h = hw[0].to_i
+    w = hw[1].to_i
+    
+    opes = []
+    
+    work_n.times do
+        inputs = gets.split(" ")
+        ope = []
+        inputs.each do |input|
+            ope &lt;&lt; input.to_i
+        end
+        opes &lt;&lt; ope
+    end
+    
+    fields = []
+    h.times do
+        field = []
+        w.times do
+            g = "."
+            field &lt;&lt; g
+        end
+        fields &lt;&lt; field
+    end
+    
+    saved = []
+    spec_n.times do
+        spec = 0
+        saved &lt;&lt; spec
+    end
+    
+    opes.each do |ope|
+        # area_n = 0
+        areas = fields[(ope[0] - 1)..(ope[1] - 1)]
+        areas.each do |area|
+            targets = area[(ope[2] - 1)..(ope[3] - 1)]
+            targets.each do |target|
+                unless target == "."
+                    s = saved[target - 1]
+                    s += 1
+                    saved[target - 1] = s
+                end
+            end
+            # area_n = areas.length * targets.length
+        end
+        
+        hi = ope[0] - 1
+        while hi &lt; ope[1]
+            wi = ope[2] - 1
+            while wi &lt; ope[3]
+                fields[hi][wi] = ope[4]
+                wi += 1
+            end
+            hi += 1
+        end
+    end
+    
+    saved.each do |save|
+        puts save
+    end
+    fields.each do |field|
+        field.each do |f|
+            print f
+        end
+        puts ""
+    end
+  </code>
+</pre>
+<br>
+
+</div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer>
