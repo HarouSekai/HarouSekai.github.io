@@ -186,4 +186,65 @@
 </pre>
 <br>
 
+<h3 id="sales-man">巡回セールスマン問題</h3>
+<pre>
+  <code class="language-java">
+import java.util.*;
+import java.awt.Point;
+
+class Main {
+    // 2点間の距離
+    static double distancePoint(Point p, Point q) {
+        // return Math.sqrt((p.x-q.x)*(p.x-q.x)+(p.y-q.y)*(p.y-q.y));
+        return p.distance(q);
+    }
+    // 経路の表示
+    static void info(int n, List&lt;Point> route) {
+        for (int i=0; i&lt;n; i++) {
+            System.out.println(route.get(i).x + " " + route.get(i).y);
+        }
+    }
+    // pointsを並べ替えた経路
+    static List&lt;Point> tsp(int n, List&lt;Point> points) {
+        List&lt;Point> resultRoute = new ArrayList&lt;>(); // 結果を保存
+        List&lt;Point> openPoints = new ArrayList&lt;>(points); // 未訪問の点の一覧
+        resultRoute.add(openPoints.remove(0));
+        while (!openPoints.isEmpty()) {
+            // a: 今いる点, b: 移動候補の点
+            Point a = resultRoute.get(resultRoute.size()-1);
+            Point b = null;
+            // 全ての未訪問の点について、aとの距離を調べ、最も距離の短い点をbとする
+            for (Point p : openPoints) {
+                if (b == null || distancePoint(a, p) &lt; distancePoint(a, b)) {
+                    b = p;
+                }
+            }
+            resultRoute.add(b);
+            openPoints.remove(b);
+        }
+        return resultRoute;
+    }
+    public static void main(String[] args) {
+        // 入力処理
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        List&lt;Point> points = new ArrayList&lt;>();
+        points.add(new Point(0, 0)); // 最初の点として(0, 0)を追加
+        for (int i=0; i&lt;n; i++) {
+            Point p = new Point(scanner.nextInt(), scanner.nextInt());
+            points.add(p);
+        }
+
+        // 座標を並べ替えた経路を作る
+        List&lt;Point> resultRoute = tsp(n+1, points);
+
+        // 経路を表示する
+        info(n+1, resultRoute);
+    }
+}
+
+  </code>
+</pre>
+<br>
+
 </div></div><footer><div class=footer-logo>波浪世界</div><div class=content></div></footer>
