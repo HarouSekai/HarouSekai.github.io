@@ -186,7 +186,7 @@
 </pre>
 <br>
 
-<h3 id="sales-man">巡回セールスマン問題</h3>
+<h3 id="sales-man-java">巡回セールスマン問題（Java版）</h3>
 <pre>
   <code class="language-java">
 import java.util.*;
@@ -243,6 +243,56 @@ class Main {
     }
 }
 
+  </code>
+</pre>
+<br>
+
+<h3 id="sales-man-ruby">巡回セールスマン問題（Ruby版）</h3>
+<pre>
+  <code class="language-ruby">
+puts "==========入力=========="
+n = gets.to_i
+
+points = []
+n.times do
+    point = []
+    pts = gets.split(" ")
+    for pt in pts do
+        point &lt;&lt; pt.to_i + 0.0
+    end
+    points &lt;&lt; point
+end
+puts ""
+
+def distance(a, b)
+    return Math.sqrt((a[0] - b[0])*(a[0] - b[0]) + (a[1] - b[1])*(a[1] - b[1]))
+end
+
+results = [[0, 0]]
+n.times do
+    distances = []
+    t = 0
+    while t &lt; points.length
+        distances &lt;&lt; distance(results[-1], points[t])
+        t += 1
+    end
+
+    m = distances.min
+    distances.each_with_index do |d, i|
+        if d == m
+            results &lt;&lt; points[i]
+            points.delete_at(i)
+        end
+    end
+end
+
+puts "==========出力=========="
+results.each do |result|
+    print result[0].to_i
+    print " "
+    print result[1].to_i
+    puts ""
+end
   </code>
 </pre>
 <br>
