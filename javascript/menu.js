@@ -2,11 +2,15 @@ const d = document;
 const h = d.querySelector('.main');
 const h2 = d.querySelectorAll('h2');
 const h3 = d.querySelectorAll('h3');
+const hb = d.querySelectorAll('.h-block');
 let hs = [];
 h2.forEach((h)=>{
   hs.push(h);
 });
 h3.forEach((h)=>{
+  hs.push(h);
+});
+hb.forEach((h)=>{
   hs.push(h);
 });
 const menu = `
