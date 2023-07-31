@@ -1,0 +1,267 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../../assets/favicon.png rel=icon><link rel=preload href=../../assets/stylesheet.css as=style onload='this.onload=null;this.rel=stylesheet'><script src=../../assets/script.js></script></head><header><div class=content><div id=title></div><div class=header-logo><a href=../../index.html><span></span></a></div><div class=menu><a href="../../assets/index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content>
+
+<h3 id="data-model">データ型の種類</h3>
+<div class="flex">
+  <table style="margin-right:32px">
+    <thead>
+      <th colspan="2">基本データ型</th>
+    </thead>
+    <tr>
+      <td>整数型</td>
+      <td>byte&emsp;short&emsp;int&emsp;long</td>
+    </tr>
+    <tr>
+      <td>浮動小数点型</td>
+      <td>float&emsp;double</td>
+    </tr>
+    <tr>
+      <td>文字型</td>
+      <td>char</td>
+    </tr>
+    <tr>
+      <td>論理型</td>
+      <td>boolean</td>
+    </tr>
+  </table>
+  <table>
+    <thead>
+      <th colspan="2">参照型</th>
+    </thead>
+    <tr>
+      <td>クラス型</td>
+      <td>String&emsp;など</td>
+    </tr>
+    <tr>
+      <td>インターフェース型</td>
+      <td rowspan="2"></td>
+    </tr>
+    <tr>
+      <td>配列型</td>
+    </tr>
+  </table>
+</div>
+<!-- flex -->
+
+<h3 id="literal">リテラル</h3>
+具体的な値。
+<div class="h-block" id="int-l">整数リテラル</div>
+<table>
+  <thead>
+    <th>種類</th>
+    <th>例示</th>
+    <th>備考</th>
+  </thead>
+  <tr>
+    <td>10進数</td>
+    <td>
+      127<br>
+      127L&emsp;127l
+    </td>
+    <td>
+      int型<br>
+      long型
+    </td>
+  </tr>
+  <tr>
+    <td>16進数</td>
+    <td><span class="blue">0x</span>7f&emsp;<span class="blue">0X</span>7F</td>
+    <td>先頭に0xまたは0Xを付ける</td>
+  </tr>
+  <tr>
+    <td>8進数</td>
+    <td><span class="blue">0</span>117</td>
+    <td>先頭に0を付ける</td>
+  </tr>
+  <tr>
+    <td>2進数</td>
+    <td><span class="blue">0b</span>0111_1111&emsp;<span class="blue">0B</span>0111_1111</td>
+    <td>先頭に0bまたは0Bを付ける</td>
+  </tr>
+</table>
+
+<div class="h-block" id="f-l">浮動小数点リテラル</div>
+<table>
+  <thead>
+    <th>種類</th>
+    <th>例示</th>
+    <th>備考</th>
+  </thead>
+  <tr>
+    <td>10進数表記</td>
+    <td>
+      12.34<br>
+      12.34<span class="blue">f</span>&emsp;12.34<span class="blue">F</span><br>
+      12.34d&emsp;12.34D
+    </td>
+    <td>
+      double型<br>
+      float型<br>
+      double型（d/D は省略可能）
+    </td>
+  </tr>
+  <tr>
+    <td>指数表記</td>
+    <td>1234e-2</td>
+    <td>eまたはEで指数を表す</td>
+  </tr>
+</table>
+
+<div class="h-block" id="c-l">文字リテラル</div>
+<table>
+  <thead>
+    <th>種類</th>
+    <th>例示</th>
+    <th>備考</th>
+  </thead>
+  <tr>
+    <td>文字</td>
+    <td>'a'&emsp;'あ'&emsp;'日'</td>
+    <td>文字を&nbsp;'&nbsp;で囲う</td>
+  </tr>
+  <tr>
+    <td>文字コード</td>
+    <td>'\u3042'</td>
+    <td>ユニコードを&nbsp;'&nbsp;で囲う</td>
+  </tr>
+</table>
+<div class="bold" style="margin:25px 0 5px">エスケープ文字</div>
+<table>
+  <thead>
+    <th>文字</th>
+    <th>文字コード</th>
+    <th>意味</th>
+  </thead>
+  <tr>
+    <td>\n</td>
+    <td>0x0A</td>
+    <td>改行</td>
+  </tr>
+  <tr>
+    <td>\r</td>
+    <td>0x0D</td>
+    <td>復帰（行頭に戻る）</td>
+  </tr>
+  <tr>
+    <td>\t</td>
+    <td>0x09</td>
+    <td>タブ文字</td>
+  </tr>
+  <tr>
+    <td>\b</td>
+    <td>0x08</td>
+    <td>バックスペース</td>
+  </tr>
+  <tr>
+    <td>\\</td>
+    <td>0x5c</td>
+    <td>\記号</td>
+  </tr>
+  <tr>
+    <td>\'</td>
+    <td>0x27</td>
+    <td>'</td>
+  </tr>
+  <tr>
+    <td>\"</td>
+    <td>0x22</td>
+    <td>"</td>
+  </tr>
+</table>
+
+<div class="h-block" id="s-l">文字列リテラル</div>
+<table>
+  <thead>
+    <th>種類</th>
+    <th>例示</th>
+    <th>備考</th>
+  </thead>
+  <tr>
+    <td>文字列</td>
+    <td>"abc"&emsp;"こんにちは"&emsp;"a"&emsp;"あ"</td>
+    <td>文字列を&nbsp;"&nbsp;で囲う</td>
+  </tr>
+  <tr>
+    <td>空文字列</td>
+    <td>""</td>
+    <td></td>
+  </tr>
+</table>
+
+<div class="h-block" id="b-l">論理値リテラル</div>
+<ul>
+  <li>true</li>
+  <li>false</li>
+</ul>
+
+<style>.tdc{text-align:center}</style>
+<div class="h-block" id="range">値の範囲</div>
+<table id="range-t">
+  <thead>
+    <th>分類名</th>
+    <th>型名</th>
+    <th>ビット幅</th>
+    <th>値の範囲</th>
+  </thead>
+  <tr>
+    <td>文字型</td>
+    <td>char</td>
+    <td class="tdc">16</td>
+    <td>0～2<sup>16</sup>-1</td>
+  </tr>
+  <tr>
+    <td rowspan="4">整数型</td>
+    <td>byte</td>
+    <td class="tdc">8</td>
+    <td>-2<sup>7</sup>～2<sup>7</sup>-1</td>
+  </tr>
+  <tr>
+    <td>short</td>
+    <td class="tdc">16</td>
+    <td>-2<sup>15</sup>～2<sup>15</sup>-1</td>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td class="tdc">32</td>
+    <td>-2<sup>31</sup>～2<sup>31</sup>-1</td>
+  </tr>
+  <tr>
+    <td>long</td>
+    <td class="tdc">64</td>
+    <td>-2<sup>63</sup>～2<sup>63</sup>-1</td>
+  </tr>
+  <tr>
+    <td rowspan="2">浮動小数点型</td>
+    <td>float</td>
+    <td class="tdc">32</td>
+    <td>有効桁数は10進数で7桁</td>
+  </tr>
+  <tr>
+    <td>double</td>
+    <td class="tdc">64</td>
+    <td>有効桁数は10進数で15桁</td>
+  </tr>
+</table>
+
+<h3 id="var">変数</h3>
+<ul>
+  <span class="bold">コンパイルエラー事例集</span>
+  <li>異なる型の変数を同時に宣言</li>
+  <pre>
+    int a, double b;
+  </pre>
+  <li>複数の変数を同時に宣言するとき、2つ目以降の変数に型名を付ける</li>
+  <pre>
+    int a, int b;
+  </pre>
+  <li>同じ名前の変数を宣言</li>
+  <pre>
+    int a;
+    double a;
+  </pre>
+  <li>int型にdouble型のリテラルを代入</li>
+  <pre>
+    int n = 15.432;
+  </pre>
+</ul>
+
+</div></div><footer><div class=content><div class=footer-logo>波浪世界</div></div></footer>
