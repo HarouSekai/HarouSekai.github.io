@@ -68,13 +68,7 @@ window.addEventListener('load',()=>{
   function(){
     const us=d.querySelectorAll('#ul a');
     us.forEach((u,i)=>{
-      if (location.href.match(/#.+/)[0]===u.getAttribute('href')) {
-        u.setAttribute('class','blue');
-      } else {
-        u.removeAttribute('class','blue');
-      }
       u.addEventListener('click',()=>{
-        console.log(u);
         us.forEach((v,j)=>{
           if (i==j) {
             v.setAttribute('class','blue');
@@ -83,6 +77,13 @@ window.addEventListener('load',()=>{
           }
         });
       });
+    });
+    us.forEach((u)=>{
+      if (location.href.match(/#.+/)[0]===u.getAttribute('href')) {
+        u.setAttribute('class','blue');
+      } else {
+        u.removeAttribute('class','blue');
+      }
     });
   }()
 });
