@@ -20,12 +20,15 @@ window.addEventListener('load',()=>{
     let e=t.get('tag');
     const n=d.getElementById('title');
     d.title=n.innerHTML=e;
-    const b=`<div id='pan'><div><a href=../../assets/index.html?tag=技術記録 style='text-decoration:underline;color:#48f'>HOME</a>&nbsp;&gt;&nbsp;</div><div>${c}&nbsp;&gt;&nbsp;</div><div>${e}</div></div>`;
+    let b=`<div id='pan'><div><a href=../index.html?tag=技術記録 style='text-decoration:underline;color:#48f'>HOME</a>&nbsp;&gt;&nbsp;</div><div>${c}&nbsp;&gt;&nbsp;</div><div>${e}</div></div>`;
+    if (c==='develop') {
+      b=`<div id='pan'><div><a href=../articles/index.html?tag=技術記録 style='text-decoration:underline;color:#48f'>HOME</a>&nbsp;&gt;&nbsp;</div><div>${c}&nbsp;&gt;&nbsp;</div><div>${e}</div></div>`;
+    }
     if (e !== '技術記録') {
       m.insertAdjacentHTML('afterbegin',b);
       if (c !== 'develop') {
         const m=d.querySelector('.menu a');
-        m.setAttribute('href',`../../assets/index.html?tag=技術記録#${c.replaceAll(' ','_')}`);
+        m.setAttribute('href',`../index.html?tag=技術記録#${c.replaceAll(' ','_')}`);
       }
     }
   }(),
