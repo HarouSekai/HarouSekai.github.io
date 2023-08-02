@@ -1,13 +1,19 @@
 window.addEventListener('load',()=>{
   const d=document;
+
+  //CSS読み込み
   !function(){
     const l=d.createElement('link');
     l.href='../../assets/stylesheet.css';
     l.rel='stylesheet';d.head.appendChild(l)
   }(),
+
   function(){
+    //header .contentにidを付与
     const h=d.querySelector('header .content');
     h.setAttribute('id','header-content');
+
+    //title, headerにページ名を表示
     const m=d.querySelector('.main .content');
     const t=new URL(window.location.href).searchParams;
     const c=t.get('dir');
@@ -23,11 +29,15 @@ window.addEventListener('load',()=>{
       }
     }
   }(),
+
+  //prism.jsの読み込み
   function(){
       const t=d.createElement('script');
       t.src='../../javascript/prism.js',
       d.head.appendChild(t)
   }(),
+
+  //サイドバー（メニューボタン）の作成・操作
   function(){
     const h = d.querySelector('.main');
     const h2 = d.querySelectorAll('h2');
@@ -59,12 +69,14 @@ window.addEventListener('load',()=>{
       `;
     h.insertAdjacentHTML('beforeend',menu);
     const ul = d.getElementById('ul');
-    const lis = hs.forEach((h)=>{
+    hs.forEach((h)=>{
       const li = `<li><a href=#${h.id}>${h.innerHTML}</a></li>`;
       ul.insertAdjacentHTML('beforeend',li);
     });
     const t = d.getElementById('menu-btn'),e = d.getElementById('menu-items');d.getElementById('close-btn'),t.addEventListener('click', ()=>{t.setAttribute('style', 'display:none;'),e.setAttribute('style', 'display:block;'),e.addEventListener('click', ()=>{e.setAttribute('style', 'display:none;'),t.setAttribute('style', 'display:flex;')})})
   }(),
+
+  //サイドバー（メニューボタン）の該当の文字を着色
   function(){
     const us=d.querySelectorAll('#ul a');
     us.forEach((u,i)=>{
