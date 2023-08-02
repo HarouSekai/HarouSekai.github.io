@@ -1,4 +1,4 @@
-# HarouSekai.github.io
+# 波浪世界
 
 学習した技術を記録しているWebサイトです。
 
