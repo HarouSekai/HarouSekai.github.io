@@ -1,0 +1,262 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../../assets/favicon.png rel=icon><link rel=preload href=../../assets/stylesheet.css as=style onload='this.onload=null;this.rel=stylesheet'><script src=../../assets/script.js></script></head><header><div class=content><div id=title></div><div class=header-logo><a href=../../index.html><span></span></a></div><div class=menu><a href="../../assets/index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content>
+
+<h3 id="construction">ディレクトリ構成</h3>
+<pre>
+  /
+  |_app
+    |_assets
+    |  |_stylesheets
+    |    |_image.css
+    |    |_preview.css
+    |_controllers
+    |  |_posts_controller.rb
+    |_javascript
+    |  |_preview.js
+    |_models
+    |  |_post.rb
+    |_views
+       |_posts
+         |_ _form.html.erb
+         |_edit.html.erb
+         |_index.html.erb
+         |_new.html.erb
+         |_show.html.erb
+</pre>
+<h3 id="preview-js">preview.js</h3>
+<pre>
+  <code class="language-js">
+    document.addEventListener('DOMContentLoaded',() => {
+      const postForm = document.getElementById('new_post');
+      const previewList = document.getElementById('previews');
+      if (!postForm) return null;
+      const imageLimits = 5;
+    
+      //プレビュー画像作成
+      const buildPreviewImage = (dataIndex, blob) => {
+        const previewWrapper = document.createElement('div');
+        previewWrapper.setAttribute('class','preview');
+        previewWrapper.setAttribute('data-index',dataIndex);
+    
+        const previewImage = document.createElement('img');
+        previewImage.setAttribute('class','preview-image');
+        previewImage.setAttribute('src',blob);
+    
+        const deleteButton = document.createElement('div');
+        deleteButton.setAttribute('class','image-delete-button');
+        deleteButton.innerText = "削除";
+    
+        deleteButton.addEventListener('click',()=> deleteImage(dataIndex));
+    
+        previewWrapper.appendChild(previewImage);
+        previewWrapper.appendChild(deleteButton);
+        previewList.appendChild(previewWrapper);
+      };
+    
+      //２番目以降の画像選択ボタン作成
+      const buildNewFileField = () => {
+        const newFileField = document.createElement('input');
+        newFileField.setAttribute('type', 'file');
+        newFileField.setAttribute('name', 'post[images][]');
+        
+        const lastFileField = document.querySelector('input[type="file"][name="post[images][]"]:last-child');
+        const nextDataIndex = Number(lastFileField.getAttribute('data-index')) + 1;
+        newFileField.setAttribute('data-index',nextDataIndex);
+    
+        newFileField.addEventListener('change', changedFileField);
+    
+        const fileFieldsArea = document.querySelector('.click-upload');
+        fileFieldsArea.appendChild(newFileField);
+      };
+    
+      //画像削除
+      const deleteImage = (dataIndex) => {
+        const deletePreviewImage = document.querySelector(`.preview[data-index="${dataIndex}"]`);
+        deletePreviewImage.remove();
+        const deleteFileField = document.querySelector(`input[type="file"][data-index="${dataIndex}"]`);
+        deleteFileField.remove();
+    
+        //画像が（最大枚数 - 1）になったら画像選択ボタンを作成
+        const imageCount = document.querySelectorAll('.preview').length;
+        if (imageCount == imageLimits - 1) buildNewFileField();
+      };
+    
+      //画像選択ボタンの値に変化があったときの処理
+      const changedFileField = (e) => {
+        const dataIndex = e.target.getAttribute('data-index');
+        
+        const file = e.target.files[0];
+    
+        if (!file) {
+          deleteImage(dataIndex);
+          return null;
+        }
+    
+        const blob = window.URL.createObjectURL(file);
+    
+        const alreadyPreview = document.querySelector(`.preview[data-index="${dataIndex}"]`);
+    
+        if (alreadyPreview) {
+          const alreadyPreviewImage = alreadyPreview.querySelector('img');
+          alreadyPreviewImage.setAttribute('src',blob);
+          return null;
+        }
+    
+        buildPreviewImage(dataIndex, blob);
+    
+        const imageCount = document.querySelectorAll('.preview').length;
+        if (imageCount &lt; imageLimits) buildNewFileField();
+      };
+    
+      const fileField = document.querySelector('input[type="file"][name="post[images][]"]')
+    
+      fileField.addEventListener('change', changedFileField);
+    });
+  </code>
+</pre>
+<h3 id="posts-controller">posts_controller.rb</h3>
+<pre>
+  <code class="language-ruby">
+    class PostsController &lt; ApplicationController
+    before_action :set_post, only: [:show, :edit, :update]
+
+    def index
+      @posts = Post.all
+    end
+
+    def new
+      @post = Post.new
+    end
+
+    def create
+      @post = Post.new(post_params)
+      if @post.save
+        redirect_to root_path
+      else
+        render :new
+      end
+    end
+
+    def edit
+    end
+
+    def update
+      if @post.update(post_params)
+        redirect_to root_path
+      else
+        render :edit
+      end
+    end
+
+    private
+    def post_params
+      params.require(:post).permit(:text, {images: []})
+    end
+
+    def set_post
+      @post = Post.find(params[:id])
+    end
+  end
+
+  </code>
+</pre>
+<h3 id="_form">_form.html.erb</h3>
+<pre>
+  <code class="language-rb">
+    &lt;%= form_with model: @post, id: 'new_post', local: true do |f| %>
+&lt;%= render 'shared/error_messages', model: f.object %>
+  &lt;div class="message-field">
+    &lt;%= f.text_field :text, placeholder: 'type a message' %>
+  &lt;/div>
+  &lt;div class="image-field">
+    &lt;div id="previews">&lt;/div>
+    &lt;div class="click-upload">
+      &lt;%= f.file_field :images, name: 'post[images][]', data: {index: 0} %>
+    &lt;/div>
+  &lt;/div>
+  &lt;div class="submit-btn">
+    &lt;%= f.submit '送信' %>
+  &lt;/div>
+&lt;% end %>
+
+  </code>
+</pre>
+<h3 id="show">show.html.erb</h3>
+<pre>
+  <code class="language-rb">
+&lt;h3>詳細ページ&lt;/h3>
+&lt;div class="posted-content">
+  &lt;%= image_tag @post.images[0], class: "main-image" %>&lt;br>
+  &lt;div class="othor-images">
+    &lt;% @post.images[1..-1].each do |image| %>
+      &lt;div class="other-image">
+        &lt;%= image_tag image %>
+      &lt;/div>
+    &lt;% end %>
+  &lt;/div>
+  &lt;%= @post.text%>&lt;br>
+  &lt;%= link_to '編集', edit_post_path(@post.id)%>
+&lt;/div>
+
+  </code>
+</pre>
+<h3 id="post">post.rb</h3>
+<pre>
+  <code class="language-rb">
+    class Post &lt; ApplicationRecord
+      has_many_attached :images
+      validates :text, presence: true
+      validates :images, presence: true
+      validates :images, length: {minimum: 1, maximum: 5, message: "は1枚以上5枚以下にしてください"}
+    end
+
+  </code>
+</pre>
+<h3 id="image-css">image.css</h3>
+<pre>
+  <code class="language-css">
+    img {
+      height: 100px;
+      width: 100px;
+      object-fit: contain;
+    }
+    .other-images {
+      display: flex;
+    }
+    
+    .other-image {
+      margin-right: 10px;
+    }
+    
+    .image-delete-button {
+      text-align: center;
+      border: solid 1px;
+      cursor: pointer;
+    }
+    
+    .main-image {
+      height: 200px;
+      width: 200px;
+    }
+  </code>
+</pre>
+<h3 id="preview-css">preview.css</h3>
+<pre>
+  <code class="language-css">
+    #previews {
+      display: flex;
+    }
+    
+    .preview {
+      margin-right: 30px;
+    }
+    
+    .image-delete-button {
+      text-align: center;
+      border: solid 1px;
+      cursor: pointer;
+      margin-bottom: 5px;
+    }
+  </code>
+</pre>
+
+</div></div><footer><div class=content><div class=footer-logo>波浪世界</div></div></footer>
