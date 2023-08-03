@@ -1,8 +1,15 @@
-window.addEventListener('load',()=>{
+window.addEventListener('DOMContentLoaded',()=>{
   const d=document;
 
-  //CSS読み込み
+  //prism.jsの読み込み
   !function(){
+      const t=d.createElement('script');
+      t.src='../../javascript/prism.js',
+      d.head.appendChild(t)
+  }(),
+
+  //CSS読み込み
+  function(){
     const l=d.createElement('link');
     l.href='../../assets/stylesheet.css';
     l.rel='stylesheet';d.head.appendChild(l)
@@ -31,17 +38,13 @@ window.addEventListener('load',()=>{
         m.setAttribute('href',`../index.html?tag=技術記録#${c.replaceAll(' ','_')}`);
       }
     }
-  }(),
-
-  //prism.jsの読み込み
-  function(){
-      const t=d.createElement('script');
-      t.src='../../javascript/prism.js',
-      d.head.appendChild(t)
-  }(),
+  }()
+});
+window.addEventListener('load',()=>{
+  const d=document;
 
   //サイドバー（メニューボタン）の作成・操作
-  function(){
+  !function(){
     const h = d.querySelector('.main');
     const h2 = d.querySelectorAll('h2');
     const h3 = d.querySelectorAll('h3');
