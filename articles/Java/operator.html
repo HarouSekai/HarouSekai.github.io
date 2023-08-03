@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../../assets/favicon.png rel=icon><link rel=preload href=../../assets/stylesheet.css as=style onload='this.onload=null;this.rel=stylesheet'><script src=../../assets/script.js></script></head><header><div class=content><div id=title></div><div class=header-logo><a href=../../index.html><span></span></a></div><div class=menu><a href="../index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content>
+
+<h3 id="plus">+</h3>
+<ul>
+  <li>両辺が数値なら算術演算子</li>
+  <li>左右のどちらかが数値ならば文字列連結演算子</li>
+  <li>※ 文字列演算子の場合、数値の型変換は不要</li>
+</ul>
+<p>
+  <span class="bold">String型からint型への変換</span>
+  <pre>
+    <code class="language-java">
+      String str = "24";
+      int num = Integer.valueOf(str).intValue();
+    </code>
+  </pre>
+</p>
+<p>
+  <span class="bold">他の例</span>
+  <pre>
+    <code class="language-java">
+    String si = "42";
+    String sd = "2.84";
+    String sb = "false";
+
+    int i = Integer.valueOf(si).intValue();
+    double d = Double.valueOf(sd).doubleValue();
+    boolean b = Boolean.valueOf(sb).booleanValue();
+    </code>
+  </pre>
+</p>
+
+<h3 id="inc-dec">++/--</h3>
+<p>
+  <pre>
+    前置：  ++a, --b  ... 計算前に+1/-1
+    後置：  a++, b--  ... 計算後に+1/-1
+  </pre>
+</p>
+
+<h3 id="cast">キャスト演算子</h3>
+<p>
+  <pre>
+    <code class="language-java">
+      int number = (int)10.5;   //10
+      float x = (float)1.234;   //1.234f
+    </code>
+  </pre>
+</p>
+
+</div></div><footer><div class=content><div class=footer-logo>波浪世界</div></div></footer>
