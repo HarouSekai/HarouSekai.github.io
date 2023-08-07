@@ -1,0 +1,188 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset=utf-8><meta content="width=device-width,initial-scale=1"name=viewport><link href=../../assets/favicon.png rel=icon><link rel=preload href=../../assets/stylesheet.css as=style onload='this.onload=null;this.rel=stylesheet'><script src=../../assets/script.js></script></head><header><div class=content><div id=title></div><div class=header-logo><a href=../../index.html><span></span></a></div><div class=menu><a href="../index.html?tag=技術記録">HOME</a></div></div></header><div class=main><div class=content>
+
+<h2 id="new1">配列の作成（１）</h2>
+<p>
+  <pre>
+    <code class="language-java">
+  int[] n = {5, 12, 8, 21, 9};
+  String[] s = {"春", "夏", "秋", "冬"};
+    </code>
+  </pre>
+</p>
+
+<h2 id="new2">配列の作成（２）</h2>
+<p>
+  <pre>
+    <code class="language-java">
+  int[] n = new int[5];   //配列の要素数を決める
+    </code>
+  </pre>
+</p>
+
+<h2 id="tostring">配列の文字列表現を取得</h2>
+<p>
+  <pre>
+    <code class="language-java">
+    public static String toString(int[] a)
+    public static String deepToString(Object[] a)
+    </code>
+  </pre>
+</p>
+
+<h2 id="fill">すべての要素を特定の値で埋める</h2>
+<p>
+  <pre>
+    <code class="language-java">
+package sample;
+import java.util.Arrays;
+
+public class Sample01_01 {
+
+	public static void main(String[] args) {
+		int[] a = new int[3];
+		Arrays.fill(a, 10);
+		
+		System.out.println(Arrays.toString(a));
+        //[10, 10, 10]
+	}
+}
+    </code>
+  </pre>
+</p>
+
+<h2 id="copyofrange">配列の指定範囲から新しい配列を作成する</h2>
+<p>
+  <pre>
+    <code class="language-java">
+public static int[] copyOfRange(配列, 開始インデックス番号, 終了インデックス番号 - 1)
+    </code>
+  </pre>
+  <pre>
+    <code class="language-java">
+package sample;
+import java.util.Arrays;
+
+public class Sample01_01 {
+
+	public static void main(String[] args) {
+		int[] a = {1,2,4,8,16,32};
+		int[] b = Arrays.copyOfRange(a, 3, 6);
+		System.out.println(Arrays.toString(b));
+          //[8, 16, 32]
+	}
+}
+    </code>
+  </pre>
+</p>
+
+<h2 id="arraycopy">２つの配列を連結して新しい配列を作成</h2>
+<p>
+  <pre>
+    <code class="language-java">
+arraycopy(Object src, int srcPos, Object dest, int destPos, int length)
+    </code>
+  </pre>
+  <pre>
+    src - 転送元配列
+    srcPos - ソース配列の開始位置
+    dest - 転送先配列
+    destPos - 転送先データ内の開始位置
+    length - コピーされつ配列要素の数
+  </pre>
+  <pre>
+    <code class="language-java">
+    package sample;
+    import java.util.Arrays;
+    
+    public class Sample01_01 {
+    
+      public static void main(String[] args) {
+        int[] src1 = {28,14,35,19};
+        int[] src2 = {17, 40, 23};
+        int[] dest = new int[src1.length + src2.length];
+        
+        System.arraycopy(src1, 0, dest, 0, src1.length);
+        System.arraycopy(src2, 0, dest, src1.length, src2.length);
+        
+        System.out.println(Arrays.toString(src1));
+        System.out.println(Arrays.toString(src2));
+        System.out.println(Arrays.toString(dest));
+      }
+    }
+    //[28, 14, 35, 19]
+    //[17, 40, 23]
+    //[28, 14, 35, 19, 17, 40, 23]
+
+    </code>
+  </pre>
+</p>
+
+<h2 id="equals">２つの配列の要素の値を比較する</h2>
+<p>
+  <pre>
+    <code class="language-java">
+    public static boolean equals(int[] a, int[] a2)
+
+    ※多次元配列の場合
+    public static boolean deepEquals(Object[] a1, Object[] a2)
+    </code>
+  </pre>
+  <pre>
+    a - １つ目の配列
+    b - ２つ目の配列
+
+    戻り値：
+    ２つの配列が同等である場合はtrue
+  </pre>
+  <pre>
+    <code class="language-java">
+  package sample;
+  import java.util.Arrays;
+
+  public class Sample01_01 {
+
+    public static void main(String[] args) {
+      int[] a = {85, 78, 92};
+      int[] b = {85, 78, 92};
+      
+      System.out.println(Arrays.equals(a, b));
+    }
+  }
+  //true
+    </code>
+  </pre>
+</p>
+
+<h2 id="sort">配列の要素を昇順にソートする</h2>
+<p>
+  <pre>
+    <code class="language-java">
+    public static void sort(int[] a)
+    </code>
+  </pre>
+  <pre>
+    a - ソートされる配列
+  </pre>
+  <pre>
+    <code class="language-java">
+package sample;
+import java.util.Arrays;
+
+public class Sample01_01 {
+
+	public static void main(String[] args) {
+		int[] a = {12, 24, 18, 35, 21};
+		
+		System.out.println(Arrays.toString(a));
+    //[12, 24, 18, 35, 21]
+		
+		Arrays.sort(a);
+		System.out.println(Arrays.toString(a));
+    //[12, 18, 21, 24, 35]
+	}
+}
+    </code>
+  </pre>
+</p>
+
+</div></div><footer><div class=content><div class=footer-logo>波浪世界</div></div></footer>
