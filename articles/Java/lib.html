@@ -19,60 +19,63 @@
     <th>機能</th>
   </thead>
   <tr>
-    <td>static double abs(double a)</td>
+    <td>double abs(double a)</td>
     <td>aの絶対値を返す</td>
   </tr>
   <tr>
-    <td>static int abs(int a)</td>
+    <td>int abs(int a)</td>
     <td>aの絶対値を返す</td>
   </tr>
   <tr>
-    <td>static double pow(double a, double b)</td>
+    <td>double pow(double a, double b)</td>
     <td>aのb乗を返す</td>
   </tr>
   <tr>
-    <td>static double toRadians(double a)</td>
+    <td>double toRadians(double a)</td>
     <td>角度aをラジアンに変換して返す</td>
   </tr>
   <tr>
-    <td>static double random()</td>
+    <td>double random()</td>
     <td>0.0以上で1.0より小さい値をランダムに返す</td>
   </tr>
   <tr>
-    <td>static double sqrt(double a)</td>
+    <td>double sqrt(double a)</td>
     <td>aの平方根を返す</td>
   </tr>
   <tr>
-    <td>static long round(double a)</td>
+    <td>long round(double a)</td>
     <td>aに最も近いlongの値を返す（四捨五入）</td>
   </tr>
 </table>
 
-<h3 id="input">InputクラスのAPI</h3>
+<h3 id="scanner">ScannerクラスのAPI</h3>
 <table>
   <thead>
     <th>クラスメソッド</th>
     <th>機能</th>
   </thead>
   <tr>
-    <td>static int getInt()</td>
-    <td>入力した1つの整数（int）を返す</td>
+    <td>int nextInt()</td>
+    <td>入力した次のトークンをintとして返す</td>
   </tr>
 </table>
-<div class="bold" style="margin:30px 0 20px">Inputクラスのセットアップ</div>
+<div class="bold" style="margin:30px 0 20px">使用例</div>
 <p>
-  <pre>
-    ファイルシステム
-    src
-      |_lib
-        |_Input.java
-  </pre>
-</p>
-<p>
-  コード
   <pre>
     <code class="language-java">
-  import lib.Input;</code>
+      package sample;
+      import java.util.Scanner;
+      
+      public class Sample01_01 {
+      
+        public static void main(String[] args) {
+          try (Scanner scanner = new Scanner(System.in)) {
+            System.out.println("数値を入力してください");
+            System.out.println("入力："+scanner.nextLong());
+          }
+        }
+      }      
+    </code>
   </pre>
 </p>
 
